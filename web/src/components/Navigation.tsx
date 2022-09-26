@@ -5,7 +5,7 @@ import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 
-function Navigation() {
+export default function Navigation() {
 
     interface IFormInputValues {
         repo: string;
@@ -55,10 +55,9 @@ function Navigation() {
                 style={{ maxHeight: '100px' }}
                 navbarScroll
             >
-                <Nav.Link href="data">Data</Nav.Link>
-                <Nav.Link href="data">Data</Nav.Link>
-                <Nav.Link href="data">Data</Nav.Link>
-                <Nav.Link href="data">Data</Nav.Link>
+                <Nav.Link href="/">Homepage</Nav.Link>
+                <Nav.Link href="issues">Issues</Nav.Link>
+                <Nav.Link href="commits">Commits</Nav.Link>
             </Nav>
                 <Form onSubmit={handleSubmit} className="d-flex">
                     <Form.Control
@@ -88,5 +87,3 @@ function Navigation() {
         </Navbar>
     );
 }
-
-export default Navigation;
