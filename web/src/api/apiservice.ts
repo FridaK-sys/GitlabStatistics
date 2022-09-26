@@ -4,12 +4,6 @@ import { APIRequestMethod, APIResponse, Commit, Issue } from './types';
 
 const PROJECT_ID = 17521;
 
-/*
-interface IFormInputValues {
-  repo: string;
-  token: string;
-}
-
 function getFormValues() {
   const storedValues = localStorage.getItem('form');
   if (!storedValues)
@@ -19,16 +13,15 @@ function getFormValues() {
       };
     return JSON.parse(storedValues);
 }
-*/
 
 export const fromAPI = async ( urlPath: string, method: APIRequestMethod, body?: unknown ): Promise<APIResponse<unknown>> => { 
   const response = await fetch( 
-    `https://gitlab.stud.idi.ntnu.no/api/v4/projects/${PROJECT_ID}${urlPath}`,
+    `https://gitlab.stud.idi.ntnu.no/api/v4/projects/${getFormValues().repo}${urlPath}`,
     {
       method,
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${getEnv('REACT_APP_API_ACCESS_TOKEN')}`,
+        Authorization: `Bearer ${getFormValues().token}`,
       },
       body: JSON.stringify(body),
     },
@@ -62,3 +55,5 @@ const getCommitsRecursive = async (page: number): Promise<Commit[]> => {
     },
   );
 };
+
+/* `Bearer ${getEnv('REACT_APP_API_ACCESS_TOKEN')}`, */

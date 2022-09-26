@@ -67,16 +67,8 @@ export default function CommitsToGraph() {
 
     return (
         <Container>
-            <div className="mt-2 mb-4">
-                <h2>Commits chart</h2>
-                <p>The graph below shows commits per day over the period chosen 
-                    on the slider under the graph. 10th of september was the day 
-                    of the first commits, and the end date on the graph is the 
-                    date of the latest commit to the repository.</p>
-            </div>
-            <div>
-                <Chart {...props} />
-            </div>
+            <h3 className="pt-4 pb-4 text-center">Commits chart</h3>
+            <Chart {...props} />
         </Container>
     );
 }
