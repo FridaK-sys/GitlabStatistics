@@ -58,6 +58,7 @@ export default function Navigation() {
                 <Nav.Link href="/">Homepage</Nav.Link>
                 <Nav.Link href="issues">Issues</Nav.Link>
                 <Nav.Link href="commits">Commits</Nav.Link>
+                <Nav.Link href="chart">Chart</Nav.Link>
             </Nav>
                 <Form onSubmit={handleSubmit} className="d-flex">
                     <Form.Control

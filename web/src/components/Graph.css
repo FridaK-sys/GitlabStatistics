@@ -1,0 +1,19 @@
+.custom-tooltip {
+    background-color: rgba(103, 101, 121, 0.1);
+    border-radius: 10px;
+    padding: 10px;
+}
+  
+p.date {
+    margin: 2px;
+}
+  
+p.numCommits {
+    margin: 2px;
+}
+  
+.chart {
+    padding: 40px;
+    height: 550px;
+    width: 100%;
+} 

@@ -32,6 +32,11 @@ export type Commit = {
     };
 };
 
+export interface commitsByDate {
+    date: string,
+    commits: number
+}
+
 type StateGL = 'active' | 'inactive';
 
 type Milestone = {

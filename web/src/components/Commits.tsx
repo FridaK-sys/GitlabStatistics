@@ -7,18 +7,17 @@ import { formatDateAndTime } from "./utils";
 
 export default function Commits() {
     
-    const [issues, setIssues] = useState<Commit[] | null>(null);
+    const [commits, setCommit] = useState<Commit[] | null>(null);
 
     useEffect(() => {
         getAllCommitsFromApi().then((res) => {
-          if (!res.ok) return console.error(res.status, res.data);
-          setIssues(res.data);
+          setCommit(res);
         });
     }, []);
     
     const body: any = []
     
-    issues?.forEach(el => {
+    commits?.forEach(el => {
         body.push(
             <div className="pb-4">
                 <Card className="me-2">
