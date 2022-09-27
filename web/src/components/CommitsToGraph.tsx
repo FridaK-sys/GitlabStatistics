@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Dropdown, Menu, Space, Tooltip, message, MenuProps } from 'antd';
+import { Button, Dropdown, Menu, Space, MenuProps } from 'antd';
 import { DownOutlined, UserOutlined } from '@ant-design/icons';
 import { Container } from "react-bootstrap";
 import { getAllCommitsFromApi, getAllBranches, getAllCommitsFromBranch } from "../api/apiservice";
