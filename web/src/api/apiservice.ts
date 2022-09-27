@@ -1,14 +1,8 @@
 import { getEnv } from "./utils";
 
-import { APIRequestMethod, APIResponse, Commit, Issue } from './types';
+import { APIRequestMethod, APIResponse, Branch, Commit, Issue } from './types';
 
 const PROJECT_ID = 17521;
-
-/*
-interface IFormInputValues {
-  repo: string;
-  token: string;
-}
 
 function getFormValues() {
   const storedValues = localStorage.getItem('form');
@@ -19,16 +13,15 @@ function getFormValues() {
       };
     return JSON.parse(storedValues);
 }
-*/
 
 export const fromAPI = async ( urlPath: string, method: APIRequestMethod, body?: unknown ): Promise<APIResponse<unknown>> => { 
   const response = await fetch( 
-    `https://gitlab.stud.idi.ntnu.no/api/v4/projects/${PROJECT_ID}${urlPath}`,
+    `https://gitlab.stud.idi.ntnu.no/api/v4/projects/${getFormValues().repo}${urlPath}`,
     {
       method,
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${getEnv('REACT_APP_API_ACCESS_TOKEN')}`,
+        Authorization: `Bearer ${getFormValues().token}`,
       },
       body: JSON.stringify(body),
     },
@@ -43,6 +36,10 @@ export const getIssuesFromAPI = async (): Promise<APIResponse<Issue[]>> => {
 
 export const getAllCommitsFromApi = async () => {
   return getCommitsRecursive(1);
+};
+
+export const getAllCommitsFromBranch = async (branch: string) => {
+  return fromAPI('/repository/commits?ref_name=' + branch, 'GET') as Promise<APIResponse<Commit[]>>;
 };
 
 const getCommitsRecursive = async (page: number): Promise<Commit[]> => {
@@ -62,3 +59,9 @@ const getCommitsRecursive = async (page: number): Promise<Commit[]> => {
     },
   );
 };
+
+export const getAllBranches = async (): Promise<APIResponse<Branch[]>> => {
+  return fromAPI('/repository/branches', 'GET') as Promise<APIResponse<Branch[]>>; 
+}
+
+/* `Bearer ${getEnv('REACT_APP_API_ACCESS_TOKEN')}`, */

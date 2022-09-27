@@ -22,6 +22,10 @@ export default function Navigation() {
         return JSON.parse(storedValues);
     }
 
+    function removeFormValues() {
+        localStorage.removeItem('form');
+    }
+
     const [values, setValues] = React.useState<IFormInputValues>(getFormValues);
 
 	React.useEffect(() => {
@@ -29,8 +33,13 @@ export default function Navigation() {
 	}, [values]);
 
 	function handleRefresh() {
+        const repos = JSON.parse(localStorage.getItem('repos') || '[]');
+        repos.push(values.repo);
+        localStorage.setItem('repos', JSON.stringify(repos));
         window.location.reload();
 	}
+
+    
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
 		event.preventDefault();
@@ -43,6 +52,11 @@ export default function Navigation() {
 			[event.target.name]: event.target.value,
 		}));
 	}
+
+    function clearValues() {
+        removeFormValues();
+        window.location.reload();
+    }
 
     return (
         <Navbar className="p-4 pl-4" bg="dark" variant="dark" expand="lg">
@@ -72,7 +86,7 @@ export default function Navigation() {
 						value={values.repo}
                     />
                     <Form.Control
-                        type="number"
+                        type="text"
                         placeholder="Token"
                         className="me-4"
                         aria-label="Token"
@@ -81,7 +95,8 @@ export default function Navigation() {
                         onChange={handleChange}
 						value={values.token}
                     />
-                    <Button onClick={handleRefresh} variant="outline-success">Get repository</Button>
+                    <Button className="me-2" onClick={handleRefresh} variant="outline-success">Get repository</Button>
+                    <Button onClick={clearValues} variant="outline-success">Clear selection</Button>
                 </Form>
             </Navbar.Collapse>
         </Container>

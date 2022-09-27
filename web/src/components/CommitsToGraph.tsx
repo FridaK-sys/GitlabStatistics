@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { Button, Dropdown, Menu, Space, Tooltip, message, MenuProps } from 'antd';
+import { DownOutlined, UserOutlined } from '@ant-design/icons';
 import { Container } from "react-bootstrap";
-import { getAllCommitsFromApi } from "../api/apiservice";
-import { Commit, commitsByDate } from "../api/types";
+import { getAllCommitsFromApi, getAllBranches, getAllCommitsFromBranch } from "../api/apiservice";
+import { Branch, Commit, commitsByDate } from "../api/types";
 import Chart from "./Graph";
 
 function getDates(startDateStr: string, stopDateStr: string) {
@@ -20,9 +22,31 @@ function getDates(startDateStr: string, stopDateStr: string) {
     return allDates;
 }
 
+
+
 export default function CommitsToGraph() {
 
     const [chartsData, setChartsData] = useState<commitsByDate[]>([]);
+    const [branches, setBranches] = useState<Branch[]>([])
+    const [currentBranch, setCurrentBranch] = useState<String>("")
+
+    const handleFilterClick: MenuProps['onClick'] = e => {
+        setCurrentBranch(e.key)
+        getAllCommitsFromBranch(e.key).then((res) => {
+            if (!res.ok) return console.error(res.status, res.data);
+            updateCommitData(res.data);
+        });     
+    };
+
+    const menu = (
+        <Menu>
+            {branches.map((m) => (
+            <Menu.Item key={m.name} onClick={handleFilterClick} icon={<UserOutlined />}>
+                {m.name}
+            </Menu.Item>
+            ))}
+       </Menu>
+    );
     
     function updateCommitData(commitsList: Commit[]) {
         const firstCommitDate = commitsList.slice(-1)[0].committed_date.slice(0, 10);
@@ -54,12 +78,21 @@ export default function CommitsToGraph() {
           try {
             const commits = await getAllCommitsFromApi();
             updateCommitData(commits);
+            setCurrentBranch("main")
+            
           } catch (e) {
             console.log(e);
           }
         };
         fetchCommits();
-      }, []);    
+    }, []);    
+
+    useEffect(() => {
+        getAllBranches().then((res) => {
+            if (!res.ok) return console.error(res.status, res.data);
+            setBranches(res.data);
+        });   
+    }, []);    
 
     const props = {
         data: chartsData,
@@ -67,16 +100,16 @@ export default function CommitsToGraph() {
 
     return (
         <Container>
-            <div className="mt-2 mb-4">
-                <h2>Commits chart</h2>
-                <p>The graph below shows commits per day over the period chosen 
-                    on the slider under the graph. 10th of september was the day 
-                    of the first commits, and the end date on the graph is the 
-                    date of the latest commit to the repository.</p>
-            </div>
-            <div>
-                <Chart {...props} />
-            </div>
+            <h3 className="pt-4 pb-4 text-center">Chosen branch: {currentBranch}</h3>
+            <Dropdown overlay={menu}>
+                <Button>
+                    <Space> 
+                        Branch: {currentBranch}
+                    <DownOutlined />
+                    </Space>
+                </Button>
+            </Dropdown>
+            <Chart {...props} />
         </Container>
     );
 }

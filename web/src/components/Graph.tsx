@@ -13,7 +13,7 @@ import "./Graph.css"
 
 export default function Chart(props: { data: commitsByDate[] }) {
 
-  const graphColor = "#8884d8";
+  const graphColor = "#212529";
   const filteredData = props.data.slice();
 
   function CustomTooltip({ active, payload, label }: any) {
@@ -71,7 +71,7 @@ export default function Chart(props: { data: commitsByDate[] }) {
                 dataKey="commits"
                 stroke={graphColor}
                 fill="url(#fill-color)"
-                activeDot={{ r: 8 }}
+                activeDot={{ r: 6 }}
             />
             </AreaChart>
       </ResponsiveContainer>
