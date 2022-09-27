@@ -1,6 +1,6 @@
 import { getEnv } from "./utils";
 
-import { APIRequestMethod, APIResponse, Commit, Issue } from './types';
+import { APIRequestMethod, APIResponse, Branch, Commit, Issue } from './types';
 
 const PROJECT_ID = 17521;
 
@@ -38,6 +38,10 @@ export const getAllCommitsFromApi = async () => {
   return getCommitsRecursive(1);
 };
 
+export const getAllCommitsFromBranch = async (branch: string) => {
+  return fromAPI('/repository/commits?ref_name=' + branch, 'GET') as Promise<APIResponse<Commit[]>>;
+};
+
 const getCommitsRecursive = async (page: number): Promise<Commit[]> => {
   return fromAPI(`/repository/commits?per_page=100&page=${page}&with_stats=true`, 'GET').then(
     async (res) => {
@@ -55,5 +59,9 @@ const getCommitsRecursive = async (page: number): Promise<Commit[]> => {
     },
   );
 };
+
+export const getAllBranches = async (): Promise<APIResponse<Branch[]>> => {
+  return fromAPI('/repository/branches', 'GET') as Promise<APIResponse<Branch[]>>; 
+}
 
 /* `Bearer ${getEnv('REACT_APP_API_ACCESS_TOKEN')}`, */

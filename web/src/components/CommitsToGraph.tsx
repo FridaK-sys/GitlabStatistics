@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { Button, Dropdown, Menu, Space, Tooltip, message, MenuProps } from 'antd';
+import { DownOutlined, UserOutlined } from '@ant-design/icons';
 import { Container } from "react-bootstrap";
-import { getAllCommitsFromApi } from "../api/apiservice";
-import { Commit, commitsByDate } from "../api/types";
+import { getAllCommitsFromApi, getAllBranches, getAllCommitsFromBranch } from "../api/apiservice";
+import { Branch, Commit, commitsByDate } from "../api/types";
 import Chart from "./Graph";
 
 function getDates(startDateStr: string, stopDateStr: string) {
@@ -20,9 +22,30 @@ function getDates(startDateStr: string, stopDateStr: string) {
     return allDates;
 }
 
+
+
 export default function CommitsToGraph() {
 
     const [chartsData, setChartsData] = useState<commitsByDate[]>([]);
+    const [branches, setBranches] = useState<Branch[]>([])
+
+    const handleFilterClick: MenuProps['onClick'] = e => {
+        getAllCommitsFromBranch(e.key).then((res) => {
+            console.log(res.data)
+            if (!res.ok) return console.error(res.status, res.data);
+            updateCommitData(res.data);
+        });     
+    };
+
+    const menu = (
+        <Menu>
+            {branches.map((m) => (
+            <Menu.Item key={m.name} onClick={handleFilterClick} icon={<UserOutlined />}>
+                {m.name}
+            </Menu.Item>
+            ))}
+       </Menu>
+    );
     
     function updateCommitData(commitsList: Commit[]) {
         const firstCommitDate = commitsList.slice(-1)[0].committed_date.slice(0, 10);
@@ -59,7 +82,14 @@ export default function CommitsToGraph() {
           }
         };
         fetchCommits();
-      }, []);    
+    }, []);    
+
+    useEffect(() => {
+        getAllBranches().then((res) => {
+            if (!res.ok) return console.error(res.status, res.data);
+            setBranches(res.data);
+        });   
+    }, []);    
 
     const props = {
         data: chartsData,
@@ -68,6 +98,14 @@ export default function CommitsToGraph() {
     return (
         <Container>
             <h3 className="pt-4 pb-4 text-center">Commits chart</h3>
+            <Dropdown overlay={menu}>
+                <Button>
+                    <Space>
+                        Branches
+                    <DownOutlined />
+                    </Space>
+                </Button>
+            </Dropdown>
             <Chart {...props} />
         </Container>
     );
