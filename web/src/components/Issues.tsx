@@ -20,7 +20,7 @@ export default function Issues() {
           });
     }, []);
 
-    const handleFilterClick: MenuProps['onClick'] = e => {
+    const handleStatusClick: MenuProps['onClick'] = e => {
         if (e.key == "3") {
             getIssuesFromAPI().then((res) => {
                 if (!res.ok) return console.error(res.status, res.data);
@@ -47,9 +47,37 @@ export default function Issues() {
           });
     }
 
-    const menu = (
+    const handleAuthorClick: MenuProps['onClick'] = e => {
+       
+      };
+
+    function getAllAuthorItems() {
+        const authors = new Set();
+        filteredIssues?.forEach(el => authors.add(el.author.name));
+        const items: IMenuItem[] = [];
+        var i = 0;
+        authors.forEach(author => {
+            items.push({ icon: <UserOutlined />,key: i.toString(), label: String(author)})
+            i++;});
+        return items;
+    }
+
+    interface IMenuItem {
+        icon?: React.ReactNode;
+        key:string,
+        label: string,
+     }
+
+
+    const authorMenu =( <Menu
+    onClick={handleAuthorClick}
+    items={getAllAuthorItems()}
+/>
+);
+
+    const statusMenu = (
     <Menu
-        onClick={handleFilterClick}
+        onClick={handleStatusClick}
         items={[
         {
             label: 'Closed',
@@ -100,10 +128,18 @@ export default function Issues() {
     return (
         <Container>                
             <div>
-            <Dropdown overlay={menu}>
+            <Dropdown overlay={statusMenu}>
                 <Button>
                     <Space>
-                        Filter
+                        Status
+                    <DownOutlined />
+                    </Space>
+                </Button>
+            </Dropdown>
+            <Dropdown overlay={authorMenu}>
+                <Button>
+                    <Space>
+                        Author
                     <DownOutlined />
                     </Space>
                 </Button>
