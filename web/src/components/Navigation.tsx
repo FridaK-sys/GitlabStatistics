@@ -29,8 +29,13 @@ export default function Navigation() {
 	}, [values]);
 
 	function handleRefresh() {
+        const repos = JSON.parse(localStorage.getItem('repos') || '[]');
+        repos.push(values.repo);
+        localStorage.setItem('repos', JSON.stringify(repos));
         window.location.reload();
 	}
+
+    
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
 		event.preventDefault();
