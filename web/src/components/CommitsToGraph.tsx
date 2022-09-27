@@ -28,10 +28,11 @@ export default function CommitsToGraph() {
 
     const [chartsData, setChartsData] = useState<commitsByDate[]>([]);
     const [branches, setBranches] = useState<Branch[]>([])
+    const [currentBranch, setCurrentBranch] = useState<String>("")
 
     const handleFilterClick: MenuProps['onClick'] = e => {
+        setCurrentBranch(e.key)
         getAllCommitsFromBranch(e.key).then((res) => {
-            console.log(res.data)
             if (!res.ok) return console.error(res.status, res.data);
             updateCommitData(res.data);
         });     
@@ -77,6 +78,8 @@ export default function CommitsToGraph() {
           try {
             const commits = await getAllCommitsFromApi();
             updateCommitData(commits);
+            setCurrentBranch("main")
+            
           } catch (e) {
             console.log(e);
           }
@@ -97,11 +100,11 @@ export default function CommitsToGraph() {
 
     return (
         <Container>
-            <h3 className="pt-4 pb-4 text-center">Commits chart</h3>
+            <h3 className="pt-4 pb-4 text-center">Chosen branch: {currentBranch}</h3>
             <Dropdown overlay={menu}>
                 <Button>
-                    <Space>
-                        Branches
+                    <Space> 
+                        Branch: {currentBranch}
                     <DownOutlined />
                     </Space>
                 </Button>
