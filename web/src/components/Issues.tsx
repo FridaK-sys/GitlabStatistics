@@ -54,34 +54,6 @@ export default function Issues() {
           });
     }
 
-    const handleAuthorClick: MenuProps['onClick'] = e => {
-       
-      };
-
-    function getAllAuthorItems() {
-        const authors = new Set();
-        filteredIssues?.forEach(el => authors.add(el.author.name));
-        const items: IMenuItem[] = [];
-        var i = 0;
-        authors.forEach(author => {
-            items.push({ icon: <UserOutlined />,key: i.toString(), label: String(author)})
-            i++;});
-        return items;
-    }
-
-    interface IMenuItem {
-        icon?: React.ReactNode;
-        key:string,
-        label: string,
-     }
-
-
-    const authorMenu =( <Menu
-    onClick={handleAuthorClick}
-    items={getAllAuthorItems()}
-/>
-);
-
     const statusMenu = (
     <Menu
         onClick={handleStatusClick}
@@ -139,14 +111,6 @@ export default function Issues() {
                 <Button>
                     <Space>
                         Status
-                    <DownOutlined />
-                    </Space>
-                </Button>
-            </Dropdown>
-            <Dropdown overlay={authorMenu}>
-                <Button>
-                    <Space>
-                        Author
                     <DownOutlined />
                     </Space>
                 </Button>
