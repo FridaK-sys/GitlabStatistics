@@ -21,12 +21,12 @@ export default function Issues() {
     }, []);
 
     const handleFilterClick: MenuProps['onClick'] = e => {
-        if (e.key == "3") {
+        if (e.key === "3") {
             getIssuesFromAPI().then((res) => {
                 if (!res.ok) return console.error(res.status, res.data);
                 setFilteredIssues(res.data);
               });
-        } else if (e.key == "1") {
+        } else if (e.key === "1") {
             filterClosedIssues();
         } else {
             filterOpenIssues();
