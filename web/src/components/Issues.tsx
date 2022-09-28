@@ -14,23 +14,30 @@ export default function Issues() {
     const [filteredIssues, setFilteredIssues] = useState<Issue[] | null>(null);
 
     useEffect(() => {
-        getIssuesFromAPI().then((res) => {
-            if (!res.ok) return console.error(res.status, res.data);
-            setFilteredIssues(res.data);
-          });
-    }, []);
-
-    const handleFilterClick: MenuProps['onClick'] = e => {
-        if (e.key === "3") {
+        if (sessionStorage.getItem("status") === null || sessionStorage.getItem("status") === "3") {
             getIssuesFromAPI().then((res) => {
                 if (!res.ok) return console.error(res.status, res.data);
                 setFilteredIssues(res.data);
-              });
-        } else if (e.key === "1") {
+          });
+        } else if (sessionStorage.getItem("status")=="1") {
             filterClosedIssues();
         } else {
             filterOpenIssues();
         }
+    }, []);
+
+    const handleStatusClick: MenuProps['onClick'] = e => {
+        if (e.key == "3") {
+            getIssuesFromAPI().then((res) => {
+                if (!res.ok) return console.error(res.status, res.data);
+                setFilteredIssues(res.data);
+              });
+        } else if (e.key == "1") {
+            filterClosedIssues();
+        } else {
+            filterOpenIssues();
+        }
+        sessionStorage.setItem("status", e.key);
       };
 
     function filterClosedIssues() {
@@ -47,9 +54,9 @@ export default function Issues() {
           });
     }
 
-    const menu = (
+    const statusMenu = (
     <Menu
-        onClick={handleFilterClick}
+        onClick={handleStatusClick}
         items={[
         {
             label: 'Closed',
@@ -100,10 +107,10 @@ export default function Issues() {
     return (
         <Container>                
             <div>
-            <Dropdown overlay={menu}>
+            <Dropdown overlay={statusMenu}>
                 <Button>
                     <Space>
-                        Filter
+                        Status
                     <DownOutlined />
                     </Space>
                 </Button>

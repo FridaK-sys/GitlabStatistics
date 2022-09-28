@@ -22,10 +22,6 @@ export default function Navigation() {
         return JSON.parse(storedValues);
     }
 
-    function removeFormValues() {
-        localStorage.removeItem('form');
-    }
-
     const [values, setValues] = React.useState<IFormInputValues>(getFormValues);
 
 	React.useEffect(() => {
@@ -53,11 +49,6 @@ export default function Navigation() {
 		}));
 	}
 
-    function clearValues() {
-        removeFormValues();
-        window.location.reload();
-    }
-
     return (
         <Navbar className="p-4 pl-4" bg="dark" variant="dark" expand="lg">
         <Container fluid>
@@ -72,7 +63,6 @@ export default function Navigation() {
                 <Nav.Link href="/">Homepage</Nav.Link>
                 <Nav.Link href="issues">Issues</Nav.Link>
                 <Nav.Link href="commits">Commits</Nav.Link>
-                <Nav.Link href="chart">Chart</Nav.Link>
             </Nav>
                 <Form onSubmit={handleSubmit} className="d-flex">
                     <Form.Control
@@ -86,7 +76,7 @@ export default function Navigation() {
 						value={values.repo}
                     />
                     <Form.Control
-                        type="text"
+                        type="number"
                         placeholder="Token"
                         className="me-4"
                         aria-label="Token"
@@ -95,8 +85,7 @@ export default function Navigation() {
                         onChange={handleChange}
 						value={values.token}
                     />
-                    <Button className="me-2" onClick={handleRefresh} variant="outline-success">Get repository</Button>
-                    <Button onClick={clearValues} variant="outline-success">Clear selection</Button>
+                    <Button onClick={handleRefresh} variant="outline-success">Get repository</Button>
                 </Form>
             </Navbar.Collapse>
         </Container>
