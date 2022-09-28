@@ -14,10 +14,16 @@ export default function Issues() {
     const [filteredIssues, setFilteredIssues] = useState<Issue[] | null>(null);
 
     useEffect(() => {
-        getIssuesFromAPI().then((res) => {
-            if (!res.ok) return console.error(res.status, res.data);
-            setFilteredIssues(res.data);
+        if (sessionStorage.getItem("status") === null || sessionStorage.getItem("status") === "3") {
+            getIssuesFromAPI().then((res) => {
+                if (!res.ok) return console.error(res.status, res.data);
+                setFilteredIssues(res.data);
           });
+        } else if (sessionStorage.getItem("status")=="1") {
+            filterClosedIssues();
+        } else {
+            filterOpenIssues();
+        }
     }, []);
 
     const handleStatusClick: MenuProps['onClick'] = e => {
@@ -31,6 +37,7 @@ export default function Issues() {
         } else {
             filterOpenIssues();
         }
+        sessionStorage.setItem("status", e.key);
       };
 
     function filterClosedIssues() {
