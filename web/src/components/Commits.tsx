@@ -1,40 +1,33 @@
 import React, { useEffect, useState } from "react";
-import Card from 'react-bootstrap/Card';
 import Container from 'react-bootstrap/Container';
 import { getAllCommitsFromApi } from '../api/apiservice';
 import { Commit } from "../api/types";
 import { formatDateAndTime } from "./utils";
+import { Card, Col, Row } from 'antd';
 
 export default function Commits() {
     
-    const [issues, setIssues] = useState<Commit[] | null>(null);
+    const [commits, setCommit] = useState<Commit[] | null>(null);
 
     useEffect(() => {
         getAllCommitsFromApi().then((res) => {
-          if (!res.ok) return console.error(res.status, res.data);
-          setIssues(res.data);
+          setCommit(res);
         });
     }, []);
     
     const body: any = []
     
-    issues?.forEach(el => {
+    commits?.forEach(el => {
         body.push(
-            <div className="pb-4">
-                <Card className="me-2">
-                    <Card.Header>Id: {el.id}</Card.Header>
-                    <Card.Body>
-                        <Card.Title>Title: {el.title}</Card.Title>
-                        <Card.Text>
-                            <p>Author_name: {el.author_name}</p>
-                            <p>Author_email: {el.author_email}</p>
-                            <p>Authored_date: {formatDateAndTime(el.authored_date)}</p>
-                            <p>Committed_date: {formatDateAndTime(el.committed_date)}</p>
-                            <p>Message: {el.message}</p>
-                        </Card.Text>
-                    </Card.Body>
+            <Col xs={24} xl={8} className="mb-4">
+                <Card title={el.id}>
+                    <p>Author_name: {el.author_name}</p>
+                    <p>Author_email: {el.author_email}</p>
+                    <p>Authored_date: {formatDateAndTime(el.authored_date)}</p>
+                    <p>Committed_date: {formatDateAndTime(el.committed_date)}</p>
+                    <p>Message: {el.message}</p>
                 </Card>
-            </div>
+            </Col>
         )     
     
     })
@@ -42,9 +35,11 @@ export default function Commits() {
     return (
         <Container>
             <div>
-                <h3 className="pt-4 pb-4 text-center">Alle commits i prosjektet</h3>
-                <div className="d-flex flex-wrap align-items-stretch justify-content-center">
-                    {body}
+                <h3 className="pt-4 pb-4 text-center">Alle commits i main</h3>
+                <div className="site-card-wrapper">
+                    <Row gutter={16}>
+                        {body}
+                    </Row>
                 </div>
             </div>
         </Container>

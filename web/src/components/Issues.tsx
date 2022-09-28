@@ -1,8 +1,8 @@
-import { Button, Dropdown, Menu, Space, Tooltip, message } from 'antd';
+import { Button, Dropdown, Menu, Space } from 'antd';
 import { DownOutlined, UserOutlined } from '@ant-design/icons';
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { Card, Col, Row } from 'antd';
 
-import Card from 'react-bootstrap/Card';
 import Container from 'react-bootstrap/Container';
 import { Issue } from "../api/types";
 import type { MenuProps } from 'antd';
@@ -21,12 +21,12 @@ export default function Issues() {
     }, []);
 
     const handleFilterClick: MenuProps['onClick'] = e => {
-        if (e.key == "3") {
+        if (e.key === "3") {
             getIssuesFromAPI().then((res) => {
                 if (!res.ok) return console.error(res.status, res.data);
                 setFilteredIssues(res.data);
               });
-        } else if (e.key == "1") {
+        } else if (e.key === "1") {
             filterClosedIssues();
         } else {
             filterOpenIssues();
@@ -69,38 +69,30 @@ export default function Issues() {
         ]}
     />
     );
-      
     
     let body: any = []
     
     filteredIssues?.forEach(el => {
         body.push(
-            <div className="pb-4">
-                <Card className="me-2">
-                    <Card.Header>Id: {el.id}</Card.Header>
-                    <Card.Body>
-                        <Card.Title>Title: {el.title}</Card.Title>
-                        <Card.Text>
-                            <p>Author: {el.author.name}</p>
-                            <p>Created_at: {formatDateAndTime(el.created_at)}</p>
-                            <p className="pb-2">Labels: 
-                                {el.labels.map((el) => (
-                                    <li>{el}</li>
-                                ))}
-                            </p>
-                            <p>Closed_at: {(el.closed_at ? formatDateAndTime(el.closed_at) : "Not closed")}</p>
-                            <p>Milestone: {el.milestone.title}</p>
-                        </Card.Text>
-                    </Card.Body>
+              <Col xs={24} xl={6} className="mb-4">
+                <Card title={el.id}>
+                    <p>Author: {el.author.name}</p>
+                    <p>Created_at: {formatDateAndTime(el.created_at)}</p>
+                    <p>Labels: 
+                    {el.labels.map((el) => (
+                        <li>{el}</li>
+                    ))}
+                    </p>
+                    <p>Closed_at: {(el.closed_at ? formatDateAndTime(el.closed_at) : "Not closed")}</p>
+                    <p>Milestone: {el.milestone.title}</p>
                 </Card>
-            </div>
+              </Col>
         )     
     })
 
     return (
         <Container>                
-            <div>
-            <Dropdown overlay={menu}>
+            <Dropdown className="mb-4" overlay={menu}>
                 <Button>
                     <Space>
                         Filter
@@ -108,10 +100,10 @@ export default function Issues() {
                     </Space>
                 </Button>
             </Dropdown>
-                <h3 className="pt-4 pb-4 text-center">Alle issues i prosjektet</h3>
-                <div className="d-flex flex-wrap justify-content-center">
+            <div className="site-card-wrapper">
+                <Row gutter={16}>
                     {body}
-                </div>
+                </Row>
             </div>
         </Container>
     );
