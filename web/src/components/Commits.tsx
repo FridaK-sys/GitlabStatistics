@@ -11,7 +11,8 @@ export default function Commits() {
 
     useEffect(() => {
         getAllCommitsFromApi().then((res) => {
-          setCommit(res);
+            if (!res.ok) return console.error(res.status, res.data);
+            setCommit(res.data);
         });
     }, []);
     
