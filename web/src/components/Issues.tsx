@@ -12,22 +12,38 @@ import { getIssuesFromAPI } from '../api/apiservice';
 export default function Issues() {
 
     const [filteredIssues, setFilteredIssues] = useState<Issue[] | null>(null);
+    const [currentFilter, setCurrentFilter] = useState("")
 
     useEffect(() => {
         if (sessionStorage.getItem("status") === null || sessionStorage.getItem("status") === "3") {
             getIssuesFromAPI().then((res) => {
                 if (!res.ok) return console.error(res.status, res.data);
                 setFilteredIssues(res.data);
+<<<<<<< HEAD
           });
         } else if (sessionStorage.getItem("status")=="1") {
             filterClosedIssues();
         } else {
             filterOpenIssues();
+=======
+                setCurrentFilter("All")
+          });
+        } else if (sessionStorage.getItem("status") === "1") {
+            filterClosedIssues();
+            setCurrentFilter("Closed")
+        } else {
+            filterOpenIssues();
+            setCurrentFilter("Not closed")
+>>>>>>> 6d5500957985449e61954a6e8d481d7f0669a0a4
         }
     }, []);
 
     const handleStatusClick: MenuProps['onClick'] = e => {
+<<<<<<< HEAD
         if (e.key == "3") {
+=======
+        if (e.key === "3") {
+>>>>>>> 6d5500957985449e61954a6e8d481d7f0669a0a4
             getIssuesFromAPI().then((res) => {
                 if (!res.ok) return console.error(res.status, res.data);
                 setFilteredIssues(res.data);
@@ -38,20 +54,26 @@ export default function Issues() {
             filterOpenIssues();
         }
         sessionStorage.setItem("status", e.key);
+<<<<<<< HEAD
       };
+=======
+    };
+>>>>>>> 6d5500957985449e61954a6e8d481d7f0669a0a4
 
     function filterClosedIssues() {
         getIssuesFromAPI().then((res) => {
             if (!res.ok) return console.error(res.status, res.data);
             setFilteredIssues(res.data.filter(el => /\d/.test(el.closed_at || '')));
-          });
+        });
+        setCurrentFilter("Closed")
     }
 
     function filterOpenIssues() {
         getIssuesFromAPI().then((res) => {
             if (!res.ok) return console.error(res.status, res.data);
             setFilteredIssues(res.data.filter(el => !/\d/.test(el.closed_at || '')));
-          });
+        });
+        setCurrentFilter("Not closed")
     }
 
     const statusMenu = (
@@ -110,7 +132,11 @@ export default function Issues() {
             <Dropdown overlay={statusMenu}>
                 <Button>
                     <Space>
+<<<<<<< HEAD
                         Status
+=======
+                        {currentFilter}
+>>>>>>> 6d5500957985449e61954a6e8d481d7f0669a0a4
                     <DownOutlined />
                     </Space>
                 </Button>
