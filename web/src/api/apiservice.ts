@@ -1,6 +1,6 @@
 import { getEnv } from "./utils";
 
-import { APIRequestMethod, APIResponse, Commit, Issue } from './types';
+import { APIRequestMethod, APIResponse, Commit, Issue, Project } from './types';
 
 const PROJECT_ID = 17521;
 
@@ -44,3 +44,7 @@ export const getIssuesFromAPI = async (): Promise<APIResponse<Issue[]>> => {
 export const getAllCommitsFromApi = async () => {
   return fromAPI('/repository/commits?per_page=100', 'GET') as Promise<APIResponse<Commit[]>>;
 };
+
+export const getProjectFromAPI = async () => {
+  return fromAPI('', 'GET') as Promise<APIResponse<Project>>;
+}

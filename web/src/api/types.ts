@@ -117,3 +117,9 @@ export type Issue = {
     moved_to_id: null;
     service_desk_reply_to: null;
 };
+
+export type Project = {
+    id: number;
+    name: string;
+    name_with_namespace: string;
+}
