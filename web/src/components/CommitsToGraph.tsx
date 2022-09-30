@@ -6,7 +6,7 @@ import { getAllCommitsFromApi, getAllBranches, getAllCommitsFromBranch } from ".
 import { Branch, Commit, commitsByDate } from "../api/types";
 import Chart from "./Graph";
 
-function getDates(startDateStr: string, stopDateStr: string) {
+function getDates(startDateStr: string, stopDateStr: string) { //hei
     let currentDate = new Date(startDateStr);
     const stopDate = new Date(stopDateStr);
     let allDates: commitsByDate[] = [];
