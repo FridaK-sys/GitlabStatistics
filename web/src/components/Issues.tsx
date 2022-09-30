@@ -1,8 +1,8 @@
-import { Button, Dropdown, Menu, Space, Tooltip, message } from 'antd';
+import { Button, Dropdown, Menu, Space } from 'antd';
 import { DownOutlined, UserOutlined } from '@ant-design/icons';
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { Card, Col, Row } from 'antd';
 
-import Card from 'react-bootstrap/Card';
 import Container from 'react-bootstrap/Container';
 import { Issue } from "../api/types";
 import type { MenuProps } from 'antd';
@@ -12,17 +12,21 @@ import { getIssuesFromAPI } from '../api/apiservice';
 export default function Issues() {
 
     const [filteredIssues, setFilteredIssues] = useState<Issue[] | null>(null);
+    const [currentFilter, setCurrentFilter] = useState("")
 
     useEffect(() => {
         if (sessionStorage.getItem("status") === null || sessionStorage.getItem("status") === "3") {
             getIssuesFromAPI().then((res) => {
                 if (!res.ok) return console.error(res.status, res.data);
                 setFilteredIssues(res.data);
+                setCurrentFilter("All")
           });
         } else if (sessionStorage.getItem("status")==="1") {
             filterClosedIssues();
+            setCurrentFilter("Closed")
         } else {
             filterOpenIssues();
+            setCurrentFilter("Not closed")
         }
     }, []);
 
@@ -38,23 +42,25 @@ export default function Issues() {
             filterOpenIssues();
         }
         sessionStorage.setItem("status", e.key);
-      };
+    };
 
     function filterClosedIssues() {
         getIssuesFromAPI().then((res) => {
             if (!res.ok) return console.error(res.status, res.data);
             setFilteredIssues(res.data.filter(el => /\d/.test(el.closed_at || '')));
-          });
+        });
+        setCurrentFilter("Closed")
     }
 
     function filterOpenIssues() {
         getIssuesFromAPI().then((res) => {
             if (!res.ok) return console.error(res.status, res.data);
             setFilteredIssues(res.data.filter(el => !/\d/.test(el.closed_at || '')));
-          });
+        });
+        setCurrentFilter("Not closed")
     }
 
-    const statusMenu = (
+    const menu = (
     <Menu
         onClick={handleStatusClick}
         items={[
@@ -76,49 +82,41 @@ export default function Issues() {
         ]}
     />
     );
-      
     
     let body: any = []
     
     filteredIssues?.forEach(el => {
         body.push(
-            <div className="pb-4">
-                <Card className="me-2">
-                    <Card.Header>Id: {el.id}</Card.Header>
-                    <Card.Body>
-                        <Card.Title>Title: {el.title}</Card.Title>
-                        <Card.Text>
-                            <p>Author: {el.author.name}</p>
-                            <p>Created_at: {formatDateAndTime(el.created_at)}</p>
-                            <p className="pb-2">Labels: 
-                                {el.labels.map((el) => (
-                                    <li>{el}</li>
-                                ))}
-                            </p>
-                            <p>Closed_at: {(el.closed_at ? formatDateAndTime(el.closed_at) : "Not closed")}</p>
-                            <p>Milestone: {el.milestone.title}</p>
-                        </Card.Text>
-                    </Card.Body>
+              <Col xs={24} xl={6} className="mb-4">
+                <Card title={el.id}>
+                    <p>Author: {el.author.name ? el.author.name : "Not provided"}</p>
+                    <p>Created_at: {el.created_at? formatDateAndTime(el.created_at) : "Not provided"}</p>
+                    <p>Labels: 
+                    {el.labels? el.labels.map((el) => (
+                        <li>{el}</li>
+                    )) : "Not provided"}
+                    </p>
+                    <p>Closed_at: {(el.closed_at ? formatDateAndTime(el.closed_at) : "Not closed")}</p>
+                    <p>Milestone: {el.milestone? el.milestone.title : "Not provided"}</p>
                 </Card>
-            </div>
+              </Col>
         )     
     })
 
     return (
         <Container>                
-            <div>
-            <Dropdown overlay={statusMenu}>
+            <Dropdown className="mb-4" overlay={menu}>
                 <Button>
                     <Space>
-                        Status
+                        {currentFilter}
                     <DownOutlined />
                     </Space>
                 </Button>
             </Dropdown>
-                <h3 className="pt-4 pb-4 text-center">Alle issues i prosjektet</h3>
-                <div className="d-flex flex-wrap justify-content-center">
+            <div className="site-card-wrapper">
+                <Row gutter={16}>
                     {body}
-                </div>
+                </Row>
             </div>
         </Container>
     );

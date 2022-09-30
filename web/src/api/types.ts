@@ -32,6 +32,11 @@ export type Commit = {
     };
 };
 
+export interface commitsByDate {
+    date: string,
+    commits: number
+}
+
 type StateGL = 'active' | 'inactive';
 
 type Milestone = {
@@ -122,4 +127,15 @@ export type Project = {
     id: number;
     name: string;
     name_with_namespace: string;
+}
+export type Branch = {
+    name: string,
+    merged: boolean,
+    protected: boolean,
+    default: boolean,
+    developers_can_push: boolean,
+    developers_can_merge: boolean,
+    can_push: boolean,
+    web_url: string,
+    commit: Commit,
 }
