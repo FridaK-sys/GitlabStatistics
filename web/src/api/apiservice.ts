@@ -1,4 +1,4 @@
-import { APIRequestMethod, APIResponse, Branch, Commit, Issue } from './types';
+import { APIRequestMethod, APIResponse, Branch, Commit, Issue, Project } from './types';
 
 function getFormValues() {
   const storedValues = localStorage.getItem('form');

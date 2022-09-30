@@ -28,10 +28,16 @@ export default function Homepage() {
 
     const [commits, setCommits] = useState<Commit[] | null>(null);
 
+    // useEffect(() => {
+    //     getAllCommitsFromApi().then((res) => {
+    //         if (!res.ok) return console.error(res.status, res.data);
+    //         setCommits(res.data);
+    //     });
+    // }, []);
+
     useEffect(() => {
         getAllCommitsFromApi().then((res) => {
-            if (!res.ok) return console.error(res.status, res.data);
-            setCommits(res.data);
+            setCommits(res);
         });
     }, []);
 
