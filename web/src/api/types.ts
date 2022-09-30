@@ -123,6 +123,11 @@ export type Issue = {
     service_desk_reply_to: null;
 };
 
+export type Project = {
+    id: number;
+    name: string;
+    name_with_namespace: string;
+}
 export type Branch = {
     name: string,
     merged: boolean,

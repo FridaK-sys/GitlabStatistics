@@ -21,7 +21,7 @@ export default function Issues() {
                 setFilteredIssues(res.data);
                 setCurrentFilter("All")
           });
-        } else if (sessionStorage.getItem("status") === "1") {
+        } else if (sessionStorage.getItem("status")==="1") {
             filterClosedIssues();
             setCurrentFilter("Closed")
         } else {

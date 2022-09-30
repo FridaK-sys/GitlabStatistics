@@ -1,4 +1,4 @@
-import { APIRequestMethod, APIResponse, Branch, Commit, Issue } from './types';
+import { APIRequestMethod, APIResponse, Branch, Commit, Issue, Project } from './types';
 
 function getFormValues() {
   const storedValues = localStorage.getItem('form');
@@ -36,6 +36,10 @@ export const getAllCommitsFromApi = async () => {
 
 export const getAllCommitsFromBranch = async (branch: string) => {
   return fromAPI('/repository/commits?ref_name=' + branch, 'GET') as Promise<APIResponse<Commit[]>>;
+};
+
+export const getProjectFromAPI = async () => {
+  return fromAPI('', 'GET') as Promise<APIResponse<Project>>;
 };
 
 const getCommitsRecursive = async (page: number): Promise<Commit[]> => {
