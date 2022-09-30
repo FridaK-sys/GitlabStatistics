@@ -85,7 +85,7 @@ export default function Navigation() {
                         onChange={handleChange}
 						value={values.token}
                     />
-                    <Button onClick={handleRefresh} variant="outline-success">Get repository</Button>
+                    <Button id = "getRepository" onClick={handleRefresh} variant="outline-success">Get repository</Button>
                 </Form>
             </Navbar.Collapse>
         </Container>
