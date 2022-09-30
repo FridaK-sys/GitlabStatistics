@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Container from 'react-bootstrap/Container';
 import { getAllCommitsFromApi } from '../api/apiservice';
 import { Commit } from "../api/types";
 import { formatDateAndTime } from "./utils";
 import { Card, Col, Row } from 'antd';
+import { ThemeContext } from "../context/ThemeContext";
 
 export default function Commits() {
     
     const [commits, setCommit] = useState<Commit[] | null>(null);
+    const { theme } = useContext(ThemeContext);
 
     useEffect(() => {
         getAllCommitsFromApi().then((res) => {
@@ -15,12 +17,20 @@ export default function Commits() {
         });
     }, []);
     
-    const body: any = []
+    const body: any = [] //#212529
     
     commits?.forEach(el => {
         body.push(
-            <Col xs={24} xl={8} className="mb-4">
-                <Card title={el.id}>
+            <Col xs={24} xl={8} className="mb-4"> 
+                <Card title={el.id}
+                headStyle={{
+                    backgroundColor: theme === "dark"? '#212529' : '#f5f5f5', 
+                    color: theme === "dark"? '#f8f9fa' : '000000'
+                }}
+                bodyStyle={{ 
+                    backgroundColor: theme === "dark"? '#343a40' : '#fafafa',
+                    color: theme === "dark"? '#f8f9fa' : '#000000'
+                }}>
                     <p>Author_name: {el.author_name? el.author_name : "Not provided"}</p>
                     <p>Author_email: {el.author_email? el.author_email : "Not provided"}</p>
                     <p>Authored_date: {el.authored_date? formatDateAndTime(el.authored_date) : "Not provided"}</p>
