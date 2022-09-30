@@ -12,15 +12,25 @@ import { getIssuesFromAPI } from '../api/apiservice';
 export default function Issues() {
 
     const [filteredIssues, setFilteredIssues] = useState<Issue[] | null>(null);
+    const [currentFilter, setCurrentFilter] = useState("")
 
     useEffect(() => {
-        getIssuesFromAPI().then((res) => {
-            if (!res.ok) return console.error(res.status, res.data);
-            setFilteredIssues(res.data);
+        if (sessionStorage.getItem("status") === null || sessionStorage.getItem("status") === "3") {
+            getIssuesFromAPI().then((res) => {
+                if (!res.ok) return console.error(res.status, res.data);
+                setFilteredIssues(res.data);
+                setCurrentFilter("All")
           });
+        } else if (sessionStorage.getItem("status") === "1") {
+            filterClosedIssues();
+            setCurrentFilter("Closed")
+        } else {
+            filterOpenIssues();
+            setCurrentFilter("Not closed")
+        }
     }, []);
 
-    const handleFilterClick: MenuProps['onClick'] = e => {
+    const handleStatusClick: MenuProps['onClick'] = e => {
         if (e.key === "3") {
             getIssuesFromAPI().then((res) => {
                 if (!res.ok) return console.error(res.status, res.data);
@@ -31,25 +41,28 @@ export default function Issues() {
         } else {
             filterOpenIssues();
         }
-      };
+        sessionStorage.setItem("status", e.key);
+    };
 
     function filterClosedIssues() {
         getIssuesFromAPI().then((res) => {
             if (!res.ok) return console.error(res.status, res.data);
             setFilteredIssues(res.data.filter(el => /\d/.test(el.closed_at || '')));
-          });
+        });
+        setCurrentFilter("Closed")
     }
 
     function filterOpenIssues() {
         getIssuesFromAPI().then((res) => {
             if (!res.ok) return console.error(res.status, res.data);
             setFilteredIssues(res.data.filter(el => !/\d/.test(el.closed_at || '')));
-          });
+        });
+        setCurrentFilter("Not closed")
     }
 
     const menu = (
     <Menu
-        onClick={handleFilterClick}
+        onClick={handleStatusClick}
         items={[
         {
             label: 'Closed',
@@ -95,7 +108,7 @@ export default function Issues() {
             <Dropdown className="mb-4" overlay={menu}>
                 <Button>
                     <Space>
-                        Filter
+                        {currentFilter}
                     <DownOutlined />
                     </Space>
                 </Button>
