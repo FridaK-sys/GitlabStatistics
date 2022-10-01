@@ -7,14 +7,14 @@ interface Props {
 
 export const ThemeProvider: React.FC<Props> = ({ children }) => {
     const [theme, setTheme] = useState<"light" | "dark"> (
-        (localStorage.getItem("ui.theme") as "light" | "dark") || "dark"
+        (localStorage.getItem("theme") as "light" | "dark") || "dark"
     );
 
     const toggleTheme = (): void => {
         const val = theme === "light" ? "dark" : "light";
         setTheme(val);
         console.log(val)
-        localStorage.setItem("ui.theme", val);
+        localStorage.setItem("theme", val);
     };
 
     return (

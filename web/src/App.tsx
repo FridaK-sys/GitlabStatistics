@@ -9,7 +9,7 @@ import Settings from './components/Settings';
 import CommitsToGraph from './components/CommitsToGraph';
 
 function App() {
-  
+
   return (
     <Router>
       <ThemeProvider>
@@ -17,12 +17,12 @@ function App() {
           <Navigation />
         </div>
         <Routes>
-          <Route path="/" element={<Homepage />} />
-          <Route path="/issues" element={<Issues />} />
-          <Route path='/commits' element={<Commits />} />
-          <Route path='/chart' element={<CommitsToGraph />} />
-          <Route path='/settings' element={<Settings />} />
-        </Routes>
+              <Route path="/" element={<Homepage />} />
+              <Route path="/issues" element={<Issues />} />
+              <Route path='/commits' element={<Commits />} />
+              <Route path='/chart' element={<CommitsToGraph />} />
+              <Route path='/settings' element={<Settings />} />  
+          </Routes>
       </ThemeProvider>
     </Router>
   );
