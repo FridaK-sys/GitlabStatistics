@@ -1,18 +1,19 @@
 import { Button, Dropdown, Menu, Space } from 'antd';
 import { DownOutlined, UserOutlined } from '@ant-design/icons';
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Card, Col, Row } from 'antd';
-
 import Container from 'react-bootstrap/Container';
 import { Issue } from "../api/types";
 import type { MenuProps } from 'antd';
 import { formatDateAndTime } from "./utils";
 import { getIssuesFromAPI } from '../api/apiservice';
+import { ThemeContext } from "../context/ThemeContext";
 
 export default function Issues() {
 
     const [filteredIssues, setFilteredIssues] = useState<Issue[] | null>(null);
     const [currentFilter, setCurrentFilter] = useState("")
+    const { theme } = useContext(ThemeContext);
 
     useEffect(() => {
         if (sessionStorage.getItem("status") === null || sessionStorage.getItem("status") === "3") {
@@ -88,7 +89,15 @@ export default function Issues() {
     filteredIssues?.forEach(el => {
         body.push(
               <Col xs={24} xl={6} className="mb-4">
-                <Card title={el.id}>
+                <Card title={el.id}
+                    headStyle={{
+                        backgroundColor: theme === "dark"? '#212529' : '#f5f5f5' , 
+                        color: theme === "dark"? '#f8f9fa' : '000000'
+                    }}
+                    bodyStyle={{ 
+                        backgroundColor: theme === "dark"? '#343a40' : '#fafafa',
+                        color: theme === "dark"? '#f8f9fa' : '#000000'
+                    }}>
                     <p>Author: {el.author.name ? el.author.name : "Not provided"}</p>
                     <p>Created_at: {el.created_at? formatDateAndTime(el.created_at) : "Not provided"}</p>
                     <p>Labels: 
@@ -106,7 +115,11 @@ export default function Issues() {
     return (
         <Container>                
             <Dropdown className="mb-4" overlay={menu}>
-                <Button>
+                <Button
+                style={{
+                    backgroundColor: theme === "dark"? '#212529' : '#f5f5f5' , 
+                    color: theme === "dark"? '#f8f9fa' : '000000'
+                }}>
                     <Space>
                         {currentFilter}
                     <DownOutlined />
