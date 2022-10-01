@@ -19,7 +19,7 @@ export default function Commits() {
     
     commits?.forEach(el => {
         body.push(
-            <Col xs={24} xl={8} className="mb-4">
+            <Col xs={24} md={12} xl={8} className="mb-4">
                 <Card title={el.id}>
                     <p>Author_name: {el.author_name? el.author_name : "Not provided"}</p>
                     <p>Author_email: {el.author_email? el.author_email : "Not provided"}</p>
@@ -32,7 +32,7 @@ export default function Commits() {
     })
 
     return (
-        <Container>
+        <Container fluid>
             <div>
                 <h3 className="pt-4 pb-4 text-center">Alle commits i main</h3>
                 <div className="site-card-wrapper">

@@ -87,7 +87,7 @@ export default function Issues() {
     
     filteredIssues?.forEach(el => {
         body.push(
-              <Col xs={24} xl={6} className="mb-4">
+              <Col xs={24} md={12} lg={6} className="mb-4">
                 <Card title={el.id}>
                     <p>Author: {el.author.name ? el.author.name : "Not provided"}</p>
                     <p>Created_at: {el.created_at? formatDateAndTime(el.created_at) : "Not provided"}</p>
@@ -104,7 +104,7 @@ export default function Issues() {
     })
 
     return (
-        <Container>                
+        <Container fluid>                
             <Dropdown className="mb-4" overlay={menu}>
                 <Button>
                     <Space>
