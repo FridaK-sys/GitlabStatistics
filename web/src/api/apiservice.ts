@@ -10,7 +10,7 @@ function getFormValues() {
     return JSON.parse(storedValues);
 }
 
-export const fromAPI = async ( urlPath: string, method: APIRequestMethod, body?: unknown ): Promise<APIResponse<unknown>> => { 
+export const fromAPI = async (urlPath: string, method: APIRequestMethod, body?: unknown ): Promise<APIResponse<unknown>> => { 
   const response = await fetch( 
     `https://gitlab.stud.idi.ntnu.no/api/v4/projects/${getFormValues().repo}${urlPath}`,
     {

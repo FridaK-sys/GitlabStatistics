@@ -10,10 +10,13 @@ import {
   Area,
 } from "recharts";
 import "./Graph.css"
+import { useContext } from "react";
+import { ThemeContext } from "../context/ThemeContext";
 
 export default function Chart(props: { data: commitsByDate[] }) {
-
-  const graphColor = "#212529";
+  const { theme } = useContext(ThemeContext);
+  const graphColor = theme === 'dark'? '#212529' : '#f5f5f5';
+  const strokeColor = '#212529';
   const filteredData = props.data.slice();
 
   function CustomTooltip({ active, payload, label }: any) {
@@ -69,7 +72,7 @@ export default function Chart(props: { data: commitsByDate[] }) {
             <Area
                 type="monotone"
                 dataKey="commits"
-                stroke={graphColor}
+                stroke={strokeColor}
                 fill="url(#fill-color)"
                 activeDot={{ r: 6 }}
             />

@@ -62,7 +62,7 @@ export default function Navigation() {
     return (
         <Navbar className="p-4 pl-4" bg={theme} variant={theme} expand="lg">
         <Container fluid>
-            <Navbar.Brand>Gitlab Statistics</Navbar.Brand>
+            <Navbar.Brand href="/">Gitlab Statistics</Navbar.Brand>
             <Navbar.Toggle aria-controls="navbarScroll" />
             <Navbar.Collapse id="navbarScroll">
             <Nav
