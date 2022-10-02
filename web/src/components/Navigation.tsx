@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import { ThemeContext } from '../context/ThemeContext';
 
 export default function Navigation() {
+    
+    const { theme } = useContext(ThemeContext);
 
     interface IFormInputValues {
         repo: string;
@@ -39,8 +42,6 @@ export default function Navigation() {
         window.location.reload();
 	}
 
-    
-
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
 		event.preventDefault();
 		alert('An error occurred on the server. Please try again!!!');
@@ -59,9 +60,9 @@ export default function Navigation() {
     }
 
     return (
-        <Navbar className="p-4 pl-4" bg="dark" variant="dark" expand="lg">
+        <Navbar className="p-4 pl-4" bg={theme} variant={theme} expand="lg">
         <Container fluid>
-            <Navbar.Brand>Gitlab Statistics</Navbar.Brand>
+            <Navbar.Brand href="/">Gitlab Statistics</Navbar.Brand>
             <Navbar.Toggle aria-controls="navbarScroll" />
             <Navbar.Collapse id="navbarScroll">
             <Nav
@@ -73,6 +74,7 @@ export default function Navigation() {
                 <Nav.Link href="issues">Issues</Nav.Link>
                 <Nav.Link href="commits">Commits</Nav.Link>
                 <Nav.Link href="chart">Chart</Nav.Link>
+                <Nav.Link href="settings">Settings</Nav.Link>
             </Nav>
                 <Form onSubmit={handleSubmit} className="d-flex">
                     <Form.Control
