@@ -8,6 +8,7 @@ import type { MenuProps } from 'antd';
 import { formatDateAndTime } from "./utils";
 import { getIssuesFromAPI } from '../api/apiservice';
 import { ThemeContext } from "../context/ThemeContext";
+import './Homepage.css';
 
 function getFormValues() {
     const storedValues = localStorage.getItem('form');
@@ -161,7 +162,7 @@ export default function Issues() {
              </>
             }
             {(getFormValues().repo === '') &&   
-                <p>Please enter a repo!</p>
+                <h4 className='text'>Please enter a repo!</h4>
             }             
         </Container>
     );

@@ -138,7 +138,7 @@ export default function CommitsToGraph() {
                 </>
             }
             {(getFormValues().repo === '') &&
-                <p>Please choose a repo!</p>
+                <h4 className="text">Please enter a repo!</h4>
             }
         </Container>
     );

@@ -5,6 +5,7 @@ import { Commit } from "../api/types";
 import { formatDateAndTime } from "./utils";
 import { Card, Col, Row } from 'antd';
 import { ThemeContext } from "../context/ThemeContext";
+import './Homepage.css';
 
 function getFormValues() {
     const storedValues = localStorage.getItem('form');
@@ -60,7 +61,7 @@ export default function Commits() {
         <Container>
             {!(getFormValues().repo === '') &&
                 <>
-                    <h3 className="pt-4 pb-4 text-center">Alle commits i main</h3>
+                    <h3 className="pt-4 pb-4 text-center">All commits to the branch "main"</h3>
                     <div className="site-card-wrapper">
                         <Row gutter={16}>
                             {body}
@@ -69,7 +70,7 @@ export default function Commits() {
                 </>
             }
             {(getFormValues().repo === '') &&   
-                <p>Please enter a repo!</p>
+                <h4 className="text">Please enter a repo!</h4>
             }   
         </Container>
     );

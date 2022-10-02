@@ -133,7 +133,7 @@ export default function Homepage() {
 
             {(getFormValues().repo === '') &&
             <div className="row">
-                <div id="information">
+                <div className="text" id="information">
                     <h4>Please enter a repo!</h4>
                 </div>
                 <div id="recentlyViewed">
