@@ -1,0 +1,6 @@
+{
+  "devDependencies": {
+    "jest-environment-jsdom": "^29.1.2",
+    "react-test-renderer": "^18.2.0"
+  }
+}

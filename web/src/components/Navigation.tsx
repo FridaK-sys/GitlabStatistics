@@ -22,6 +22,10 @@ export default function Navigation() {
         return JSON.parse(storedValues);
     }
 
+    function removeFormValues() {
+        localStorage.removeItem('form');
+    }
+
     const [values, setValues] = React.useState<IFormInputValues>(getFormValues);
 
 	React.useEffect(() => {
@@ -49,6 +53,11 @@ export default function Navigation() {
 		}));
 	}
 
+    function clearValues() {
+        removeFormValues();
+        window.location.reload();
+    }
+
     return (
         <Navbar className="p-4 pl-4" bg="dark" variant="dark" expand="lg">
         <Container fluid>
@@ -63,6 +72,7 @@ export default function Navigation() {
                 <Nav.Link href="/">Homepage</Nav.Link>
                 <Nav.Link href="issues">Issues</Nav.Link>
                 <Nav.Link href="commits">Commits</Nav.Link>
+                <Nav.Link href="chart">Chart</Nav.Link>
             </Nav>
                 <Form onSubmit={handleSubmit} className="d-flex">
                     <Form.Control
@@ -71,21 +81,22 @@ export default function Navigation() {
                         className="me-4"
                         aria-label="repo"
                         name="repo"
-						id="repo"
+						data-testid="repo"
                         onChange={handleChange}
 						value={values.repo}
                     />
                     <Form.Control
-                        type="number"
+                        type="text"
                         placeholder="Token"
                         className="me-4"
                         aria-label="Token"
                         name="token"
-						id="token"
+						data-testid="token"
                         onChange={handleChange}
 						value={values.token}
                     />
-                    <Button id = "getRepository" onClick={handleRefresh} variant="outline-success">Get repository</Button>
+                    <Button data-testid = "getRepository" className="me-2" onClick={handleRefresh} variant="outline-success">Get repository</Button>
+                    <Button data-testid = "clearValues" onClick={clearValues} variant="outline-success">Clear selection</Button>
                 </Form>
             </Navbar.Collapse>
         </Container>
