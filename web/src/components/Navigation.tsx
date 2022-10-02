@@ -76,11 +76,11 @@ export default function Navigation() {
                 <Nav.Link href="chart">Chart</Nav.Link>
                 <Nav.Link href="settings">Settings</Nav.Link>
             </Nav>
-                <Form onSubmit={handleSubmit} className="d-flex">
+                <Form onSubmit={handleSubmit} className="d-sm-flex">
                     <Form.Control
                         type="text"
                         placeholder="Repo"
-                        className="me-4"
+                        className="me-4 my-2"
                         aria-label="repo"
                         name="repo"
 						id="repo"
@@ -90,7 +90,7 @@ export default function Navigation() {
                     <Form.Control
                         type="text"
                         placeholder="Token"
-                        className="me-4"
+                        className="me-4 my-2"
                         aria-label="Token"
                         name="token"
 						id="token"
