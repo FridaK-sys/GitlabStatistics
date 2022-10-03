@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Button, Dropdown, Menu, Space, MenuProps } from 'antd';
 import { DownOutlined, UserOutlined } from '@ant-design/icons';
 import { Container } from "react-bootstrap";
 import { getAllCommitsFromApi, getAllBranches, getAllCommitsFromBranch } from "../api/apiservice";
 import { Branch, Commit, commitsByDate } from "../api/types";
 import Chart from "./Graph";
+import { ThemeContext } from "../context/ThemeContext";
 
 function getDates(startDateStr: string, stopDateStr: string) { //hei
     let currentDate = new Date(startDateStr);
@@ -22,13 +23,27 @@ function getDates(startDateStr: string, stopDateStr: string) { //hei
     return allDates;
 }
 
+function getFormValues() {
+    const storedValues = localStorage.getItem('form');
+    if (!storedValues)
+        return {
+          repo: '',
+          token: '',
+        };
+    return JSON.parse(storedValues);
+}
+
 export default function CommitsToGraph() {
 
     const [chartsData, setChartsData] = useState<commitsByDate[]>([]);
     const [branches, setBranches] = useState<Branch[]>([])
     const [currentBranch, setCurrentBranch] = useState<String>("")
+    const { theme } = useContext(ThemeContext);
 
     const handleFilterClick: MenuProps['onClick'] = e => {
+        if (getFormValues().repo === '') {
+            return
+        }
         setCurrentBranch(e.key)
         getAllCommitsFromBranch(e.key).then((res) => {
             if (!res.ok) return console.error(res.status, res.data);
@@ -72,6 +87,9 @@ export default function CommitsToGraph() {
     }
 
     useEffect(() => {
+        if (getFormValues().repo === '') {
+            return
+        }
         const fetchCommits = async () => {
           try {
             const commits = await getAllCommitsFromApi();
@@ -86,6 +104,9 @@ export default function CommitsToGraph() {
     }, []);    
 
     useEffect(() => {
+        if (getFormValues().repo === '') {
+            return
+        }
         getAllBranches().then((res) => {
             if (!res.ok) return console.error(res.status, res.data);
             setBranches(res.data);
@@ -98,16 +119,27 @@ export default function CommitsToGraph() {
 
     return (
         <Container>
-            <h3 className="pt-4 pb-4 text-center">Chosen branch: {currentBranch}</h3>
-            <Dropdown overlay={menu}>
-                <Button>
-                    <Space> 
-                        Branch: {currentBranch}
-                    <DownOutlined />
-                    </Space>
-                </Button>
-            </Dropdown>
-            <Chart {...props} />
+            {!(getFormValues().repo === '') &&
+                <>
+                    <h3 className="pt-4 pb-4 text-center">Chosen branch: {currentBranch}</h3>
+                    <Dropdown overlay={menu}>
+                        <Button
+                        style={{
+                            backgroundColor: theme === "dark"? '#212529' : '#f5f5f5' , 
+                            color: theme === "dark"? '#f8f9fa' : '000000'
+                        }}>
+                            <Space> 
+                                Branch: {currentBranch}
+                            <DownOutlined />
+                            </Space>
+                        </Button>
+                    </Dropdown>
+                    <Chart {...props} />
+                </>
+            }
+            {(getFormValues().repo === '') &&
+                <p>Please choose a repo!</p>
+            }
         </Container>
     );
 }
