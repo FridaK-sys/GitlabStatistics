@@ -83,7 +83,7 @@ export default function Navigation() {
                         className="me-4"
                         aria-label="repo"
                         name="repo"
-						id="repo"
+						data-testid="repo"
                         onChange={handleChange}
 						value={values.repo}
                     />
@@ -93,12 +93,12 @@ export default function Navigation() {
                         className="me-4"
                         aria-label="Token"
                         name="token"
-						id="token"
+						data-testid="token"
                         onChange={handleChange}
 						value={values.token}
                     />
-                    <Button className="me-2" onClick={handleRefresh} variant="outline-success">Get repository</Button>
-                    <Button onClick={clearValues} variant="outline-success">Clear selection</Button>
+                    <Button data-testid = "getRepository" className="me-2" onClick={handleRefresh} variant="outline-success">Get repository</Button>
+                    <Button data-testid = "clearValues" onClick={clearValues} variant="outline-success">Clear selection</Button>
                 </Form>
             </Navbar.Collapse>
         </Container>
