@@ -31,7 +31,9 @@ function getDates(startDateStr: string, stopDateStr: string) {
     }
     return allDates;
 }
-
+/** 
+* Function that presents commits in graph
+*/
 export default function CommitsToGraph() {
 
     const [chartData, setChartData] = useState<commitsByDate[]>([]);
