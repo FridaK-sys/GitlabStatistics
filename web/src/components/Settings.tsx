@@ -1,10 +1,13 @@
-import React from "react";
-import { ThemeContext } from "../context/ThemeContext";
-import { Switch } from 'antd';
 import { Container } from "react-bootstrap";
+import React from "react";
+import { Switch } from 'antd';
+import { ThemeContext } from "../context/ThemeContext";
 
+/** 
+* Class component that returns Setting component instance
+*/
 export default class Settings extends React.Component {
-  static contextType = ThemeContext;
+  static contextType = ThemeContext; //theme for settings component
   context!: React.ContextType<typeof ThemeContext>;
   
   render() {

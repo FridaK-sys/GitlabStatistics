@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
@@ -12,6 +13,9 @@ interface IFormInputValues {
     token?: string;
 }
 
+/** 
+* Functional component that returns navigation-component(navbar)
+*/
 export default function Navigation() {
     
     const [values, setValues] = React.useState<IFormInputValues>(getFormValues);

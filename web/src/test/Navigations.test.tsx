@@ -1,8 +1,8 @@
-import React from 'react';
 import { fireEvent, getByRole, getByTestId, render, screen, waitFor } from '@testing-library/react';
-import Navigation from '../components/Navigation';
-import userEvent from '@testing-library/user-event';
 
+import Navigation from '../components/Navigation';
+import React from 'react';
+import userEvent from '@testing-library/user-event';
 
 test("Check if button clicks", () => {
     const {container} = render(<Navigation />);
