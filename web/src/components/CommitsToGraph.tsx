@@ -31,6 +31,7 @@ function getDates(startDateStr: string, stopDateStr: string) {
     }
     return allDates;
 }
+
 /** 
 * Function that presents commits in graph
 */
