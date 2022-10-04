@@ -1,97 +1,93 @@
 import { getFormValues } from '../components/utils';
-import { requestMethod, APIResponse, Branch, Commit, Issue, Project } from './types';
+import { requestMethod, Branch, Commit, Issue, Project } from './types';
+
+const url = "https://gitlab.stud.idi.ntnu.no/api/v4/projects/" + getFormValues().repo
+const numberOfPages = 100
 
 /** 
-* Function that returns the data from the API
+* Function that gets data from GitLab
 *
-* @param urlPath
-* @param requestMethod
-* @param body
-* @returns data from API
+* @param urlPath 
+* @returns data from GitLab
 */
-export const fromAPI = async (urlPath: string, method: requestMethod, body?: unknown ): Promise<APIResponse<unknown>> => { 
-  const response = await fetch( 
-    `https://gitlab.stud.idi.ntnu.no/api/v4/projects/${getFormValues().repo}${urlPath}`,
-    {
+async function getDataFromGitlab( urlPath: String, method: requestMethod ) {
+  try {
+    const res = await fetch(url + urlPath, {
       method,
-      headers: {
+      headers: new Headers({
         'Content-Type': 'application/json',
         Authorization: `Bearer ${getFormValues().token}`,
-      },
-      body: JSON.stringify(body),
-    },
-  );
-  const data = await response.json();
-  return { status: response.status, ok: response.ok, headers: response.headers, data };
-};
+      }),
+    });
+    return res.json();
+  } catch {
+    console.log("Failed fetching from: ", urlPath);
+    return new Error("Failed fetching from: " + urlPath);
+  }
+}
 
 /** 
-* Function that returns all issues from a project
-* 
-* @returns all issues in a project
+* Function that recursively gets all data from GitLab given the response cap of 100
+*
+* @param urlPath 
+* @returns all data from a given urlPath
 */
-export const getIssuesFromAPI = async (): Promise<APIResponse<Issue[]>> => {
-  return fromAPI('/issues', 'GET') as Promise<APIResponse<Issue[]>>;
-};
+async function getData( urlPath: String ) {
+  let allResponses: any = [];
+  let size = numberOfPages;
+  let iteration = 1;
+
+  while (size === numberOfPages) {
+    const response = await getDataFromGitlab(
+      urlPath + "?per_page=" + numberOfPages + "&page=" + iteration, "GET");
+    response.map((res: any) => allResponses.push(res));
+    size = response.length;
+    iteration++;
+  }
+  return allResponses;
+}
+
+/** 
+* Function that returns all issues in a project
+*
+* @returns all issues
+*/
+export async function getIssues() {
+  return getData("/issues") as Promise<Issue[]>
+}
 
 /** 
 * Function that returns all commits from main
 *
-* @param date 
 * @returns all commits from main
 */
-export const getAllCommitsFromApi = async () => {
-  return getCommitsRecursive(1);
-};
+export async function getCommits() {
+  return getData("/repository/commits") as Promise<Commit[]>
+}
 
 /** 
-* Function that returns all commits from a branch
+* Function that returns all commits from a given branch
 *
-* @param branch 
 * @returns all commits from a given branch
 */
-export const getAllCommitsFromBranch = async (branch: string) => {
-  return fromAPI('/repository/commits?ref_name=' + branch, 'GET') as Promise<APIResponse<Commit[]>>;
-};
-
-/** 
-* Function that returns the given project
-*
-* @returns the given project
-*/
-export const getProjectFromAPI = async () => {
-  return fromAPI('', 'GET') as Promise<APIResponse<Project>>;
-};
-
-/** 
-* Function that gets all commits recursively as the API has a cap of 100 responses
-*
-* @param page 
-* @returns all commits in a project
-*/
-const getCommitsRecursive = async (page: number): Promise<Commit[]> => {
-  return fromAPI(`/repository/commits?per_page=100&page=${page}&with_stats=true`, 'GET').then(
-    async (res) => {
-      if (res.ok) {
-        if (res.headers.get('x-next-page')) {
-          return await getCommitsRecursive(page + 1).then((res_data) => {
-            return res_data.concat(res.data as Commit[]);
-          });
-        } else {
-          return res.data as Commit[];
-        }
-      } else {
-        return [];
-      }
-    },
-  );
-};
+export async function getCommitsFromBranch( branch: string ) {
+  return getDataFromGitlab('/repository/commits?ref_name=' + branch, "GET") as Promise<Commit[]>
+}
 
 /** 
 * Function that returns all branches in a project
 *
 * @returns all branches in a project
 */
-export const getAllBranches = async (): Promise<APIResponse<Branch[]>> => {
-  return fromAPI('/repository/branches', 'GET') as Promise<APIResponse<Branch[]>>; 
+export async function getBranches() {
+  return getDataFromGitlab("/repository/branches", "GET") as Promise<Branch[]>
 }
+
+/** 
+* Function that returns the project
+*
+* @returns the project
+*/
+export async function getProject() {
+  return getDataFromGitlab("", "GET") as Promise<Project>
+} 

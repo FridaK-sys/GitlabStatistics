@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import Container from 'react-bootstrap/Container';
 import { Branch, Commit, Project, Issue } from "../api/types";
-import { getAllCommitsFromApi, getIssuesFromAPI, getProjectFromAPI, getAllBranches } from '../api/apiservice';
+import { getProject, getIssues, getBranches, getCommits } from '../api/apiservice';
 import './Homepage.css';
+import image from "../images/gitlab-logo-100.png";
 import { getFormValues } from "./utils";
 
 export default function Homepage() {
@@ -18,12 +19,8 @@ export default function Homepage() {
         if (getFormValues().repo === '') {
             return
         }
-        getProjectFromAPI().then((res) => {
-            if (res === null) {
-                return
-            }
-            if (!res.ok) return console.error(res.status, res.data);
-            setProject(res.data);
+        getProject().then((res) => {
+            setProject(res);
         });
     }, []);
 
@@ -31,10 +28,7 @@ export default function Homepage() {
         if (getFormValues().repo === '') {
             return
         }
-        getAllCommitsFromApi().then((res) => {
-            if (res === null) {
-                return
-            }
+        getCommits().then((res) => {
             setCommits(res);
         });   
     }, []);
@@ -43,15 +37,11 @@ export default function Homepage() {
         if (getFormValues().repo === '') {
             return
         }
-        //Get method for retriving issues from the API. 
-        getIssuesFromAPI().then((res) => {
-            if (res === null) {
-                return
-            }
-            if (!res.ok) return console.error(res.status, res.data);
-            setAllIssues(res.data);
-            setClosedIssues(res.data.filter(el => /\d/.test(el.closed_at || ''))); //Issues som er lukket, plasseres i en egen array
-            setOpenIssues(res.data.filter(el => !/\d/.test(el.closed_at || ''))); //Issues som er åpne, plasseres i en egen array
+        // Get method for retriving issues from the API. 
+        getIssues().then((res) => {
+            setAllIssues(res);
+            setClosedIssues(res.filter(el => /\d/.test(el.closed_at || ''))); //Issues som er lukket, plasseres i en egen array
+            setOpenIssues(res.filter(el => !/\d/.test(el.closed_at || ''))); //Issues som er åpne, plasseres i en egen array
         });
     }, []);
 
@@ -59,14 +49,10 @@ export default function Homepage() {
         if (getFormValues().repo === '') {
             return
         }
-        getAllBranches().then((res) => {
-            if (res === null) {
-                return
-            }
-            setBranches(res.data);
+        getBranches().then((res) => {
+            setBranches(res);
         })
     }, []);
-
 
     const body : any = []
 
@@ -86,6 +72,7 @@ export default function Homepage() {
         <Container>
             {!(getFormValues().repo === '') &&
                 <div>
+                    <img className="mb-5 mt-3" src={image} alt="GitLab logo" width="200px"></img>
                     <h2>{project?.name_with_namespace} </h2>
                     <div className="row">
                         <div id="information">

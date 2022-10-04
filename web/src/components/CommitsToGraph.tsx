@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { Button, Dropdown, Menu, Space, MenuProps } from 'antd';
 import { DownOutlined, UserOutlined } from '@ant-design/icons';
 import { Container } from "react-bootstrap";
-import { getAllCommitsFromApi, getAllBranches, getAllCommitsFromBranch } from "../api/apiservice";
+import { getCommitsFromBranch, getCommits, getBranches } from "../api/apiservice";
 import { Branch, Commit, commitsByDate } from "../api/types";
 import Chart from "./Graph";
 import { ThemeContext } from "../context/ThemeContext";
@@ -47,9 +47,8 @@ export default function CommitsToGraph() {
             return
         }
         setCurrentBranch(e.key)
-        getAllCommitsFromBranch(e.key).then((res) => {
-            if (!res.ok) return console.error(res.status, res.data);
-            updateCommitData(res.data);
+        getCommitsFromBranch(e.key).then((res) => {
+            updateCommitData(res);
         });     
     };
 
@@ -98,13 +97,9 @@ export default function CommitsToGraph() {
             return
         }
         const fetchCommits = async () => {
-          try {
-            const commits = await getAllCommitsFromApi();
+            const commits = await getCommits();
             updateCommitData(commits);
             setCurrentBranch("main")
-          } catch (e) {
-            console.log(e);
-          }
         };
         fetchCommits();
     }, []);    
@@ -113,9 +108,8 @@ export default function CommitsToGraph() {
         if (getFormValues().repo === '') {
             return
         }
-        getAllBranches().then((res) => {
-            if (!res.ok) return console.error(res.status, res.data);
-            setBranches(res.data);
+        getBranches().then((res) => {
+            setBranches(res);
         });   
     }, []);    
 

@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
@@ -57,12 +56,15 @@ export default function Navigation() {
     */
     function clearValues() {
         localStorage.removeItem('form');
+        window.location.reload();
     }
 
     return (
         <Navbar className="p-4 pl-4" bg={theme} variant={theme} expand="lg">
             <Container fluid>
-                <Navbar.Brand href="/">Gitlab Statistics</Navbar.Brand>
+                <Navbar.Brand href="/">
+                    Gitlab Statistics
+                </Navbar.Brand>
                 <Navbar.Toggle aria-controls="navbarScroll" />
                 <Navbar.Collapse id="navbarScroll">
                 <Nav
@@ -70,7 +72,6 @@ export default function Navigation() {
                 style={{ maxHeight: '100px' }}
                 navbarScroll
                 >
-                    <Nav.Link href="/">Homepage</Nav.Link>
                     <Nav.Link href="issues">Issues</Nav.Link>
                     <Nav.Link href="commits">Commits</Nav.Link>
                     <Nav.Link href="chart">Chart</Nav.Link>

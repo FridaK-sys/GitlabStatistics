@@ -1,36 +1,34 @@
 import './Homepage.css';
-
 import { Card, Col, Row } from 'antd';
 import { formatDateAndTime, getFormValues } from "./utils";
 import { useContext, useEffect, useState } from "react";
-
 import { Commit } from "../api/types";
 import Container from 'react-bootstrap/Container';
 import { ThemeContext } from "../context/ThemeContext";
-import { getAllCommitsFromApi } from '../api/apiservice';
+import { getCommits } from '../api/apiservice';
 
 /** 
 * Functional component that returns commit-component with cards for each commit
 */
 export default function Commits() {
     
-    const [commits, setCommit] = useState<Commit[] | null>(null); //List of commits that is shown on page
-    const { theme } = useContext(ThemeContext); //theme of page
+    const [commits, setCommit] = useState<Commit[] | null>(null); // List of commits that is shown on page
+    const { theme } = useContext(ThemeContext); // Theme of page
 
     useEffect(() => {
-        //Does nothing if there is no repo in localStorage
+        // Does nothing if there is no repo in localStorage
         if (getFormValues().repo === '') {
             return
         }
-        //Gets all commits from api
-        getAllCommitsFromApi().then((res) => {
-            setCommit(res);
-        });
+        // Gets all commits from api
+        getCommits().then((res) => {
+            setCommit(res)
+        })
     }, []);
     
     const body: any = []
     
-    //Creates a card for each commit
+    // Creates a card for each commit
     if (!(getFormValues().repo === '')) {
         commits?.forEach(el => {
             body.push(
