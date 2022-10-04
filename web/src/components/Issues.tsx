@@ -52,6 +52,9 @@ export default function Issues() {
         sessionStorage.setItem("status", e.key);
     };
 
+    /** 
+    * Function that filter issues that are closed
+    */ 
     function filterClosedIssues() {
         if (getFormValues().repo === '') {
             return
@@ -62,7 +65,10 @@ export default function Issues() {
         });
         setCurrentFilter("Closed")
     }
-
+    
+    /** 
+    * Function that filter issues that are not closed  
+    */ 
     function filterOpenIssues() {
         if (getFormValues().repo === '') {
             return

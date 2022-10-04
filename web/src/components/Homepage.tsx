@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Container from 'react-bootstrap/Container';
 import { Branch, Commit, Project, Issue } from "../api/types";
 import { getAllCommitsFromApi, getIssuesFromAPI, getProjectFromAPI, getAllBranches } from '../api/apiservice';
@@ -43,6 +43,7 @@ export default function Homepage() {
         if (getFormValues().repo === '') {
             return
         }
+        //Get method for retriving issues from the API. 
         getIssuesFromAPI().then((res) => {
             if (res === null) {
                 return
