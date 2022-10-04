@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { HashRouter, Route, Routes } from 'react-router-dom';
 import Navigation from './components/Navigation';
 import Issues from './components/Issues';
 import Homepage from './components/Homepage';
@@ -11,7 +11,7 @@ import CommitsToGraph from './components/CommitsToGraph';
 function App() {
 
   return (
-    <Router>
+    <HashRouter>
       <ThemeProvider>
         <div className='mb-4'>
           <Navigation />
@@ -24,7 +24,7 @@ function App() {
               <Route path='/settings' element={<Settings />} />  
           </Routes>
       </ThemeProvider>
-    </Router>
+    </HashRouter>
   );
 }
 

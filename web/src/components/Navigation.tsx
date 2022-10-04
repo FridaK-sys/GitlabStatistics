@@ -4,6 +4,7 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import { Link } from 'react-router-dom';
 import { ThemeContext } from '../context/ThemeContext';
 import { getFormValues } from './utils';
 
@@ -63,7 +64,7 @@ export default function Navigation() {
         <Navbar className="p-4 pl-4" bg={theme} variant={theme} expand="lg">
             <Container fluid>
                 <Navbar.Brand href="/">
-                    Gitlab Statistics
+                    <Link to="/" className={theme === "dark"? "text-light" : "text-dark"}>Gitlab Statistics</Link>
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="navbarScroll" />
                 <Navbar.Collapse id="navbarScroll">
@@ -72,10 +73,18 @@ export default function Navigation() {
                 style={{ maxHeight: '100px' }}
                 navbarScroll
                 >
-                    <Nav.Link href="issues">Issues</Nav.Link>
-                    <Nav.Link href="commits">Commits</Nav.Link>
-                    <Nav.Link href="chart">Chart</Nav.Link>
-                    <Nav.Link href="settings">Settings</Nav.Link>
+                    <Nav.Link>
+                        <Link to="/issues" className={theme === "dark"? "text-light" : "text-dark"}>Issues</Link>
+                    </Nav.Link>
+                    <Nav.Link>
+                        <Link to="/Commits" className={theme === "dark"? "text-light" : "text-dark"}>Commits</Link>
+                    </Nav.Link>
+                    <Nav.Link>
+                        <Link to="/chart" className={theme === "dark"? "text-light" : "text-dark"}>Chart</Link>
+                    </Nav.Link>
+                    <Nav.Link>
+                        <Link to="/settings" className={theme === "dark"? "text-light" : "text-dark"}>Settings</Link>
+                    </Nav.Link>
                 </Nav>
                     <Form onSubmit={handleSubmit} className="d-sm-flex">
                         <Form.Control
