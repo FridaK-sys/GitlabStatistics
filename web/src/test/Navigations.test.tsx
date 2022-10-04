@@ -23,6 +23,8 @@ test("Check if value field is cleard", async () => {
     fireEvent.click(button);
     await waitFor(() => {
         expect(inputRepo.value).toBe('');
+    })
+    await waitFor(() => {
         expect(inputToken.value).toBe('');
-     })
+    })
 })

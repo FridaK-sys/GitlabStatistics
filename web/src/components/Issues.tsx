@@ -6,7 +6,7 @@ import Container from 'react-bootstrap/Container';
 import { Issue } from "../api/types";
 import type { MenuProps } from 'antd';
 import { formatDateAndTime, getFormValues } from "./utils";
-import { getIssuesFromAPI } from '../api/apiservice';
+import { getIssues } from '../api/apiservice';
 import { ThemeContext } from "../context/ThemeContext";
 import './Homepage.css';
 
@@ -21,9 +21,8 @@ export default function Issues() {
             return
         }
         if (sessionStorage.getItem("status") === null || sessionStorage.getItem("status") === "3") {
-            getIssuesFromAPI().then((res) => {
-                if (!res.ok) return console.error(res.status, res.data);
-                setFilteredIssues(res.data);
+            getIssues().then((res) => {
+                setFilteredIssues(res);
                 setCurrentFilter("All")
           });
         } else if (sessionStorage.getItem("status")==="1") {
@@ -40,9 +39,8 @@ export default function Issues() {
             return
         }
         if (e.key === "3") {
-            getIssuesFromAPI().then((res) => {
-                if (!res.ok) return console.error(res.status, res.data);
-                setFilteredIssues(res.data);
+            getIssues().then((res) => {
+                setFilteredIssues(res);
               });
         } else if (e.key === "1") {
             filterClosedIssues();
@@ -59,9 +57,8 @@ export default function Issues() {
         if (getFormValues().repo === '') {
             return
         }
-        getIssuesFromAPI().then((res) => {
-            if (!res.ok) return console.error(res.status, res.data);
-            setFilteredIssues(res.data.filter(el => /\d/.test(el.closed_at || '')));
+        getIssues().then((res) => {
+            setFilteredIssues(res.filter(el => /\d/.test(el.closed_at || '')));
         });
         setCurrentFilter("Closed")
     }
@@ -73,9 +70,8 @@ export default function Issues() {
         if (getFormValues().repo === '') {
             return
         }
-        getIssuesFromAPI().then((res) => {
-            if (!res.ok) return console.error(res.status, res.data);
-            setFilteredIssues(res.data.filter(el => !/\d/.test(el.closed_at || '')));
+        getIssues().then((res) => {
+            setFilteredIssues(res.filter(el => !/\d/.test(el.closed_at || '')));
         });
         setCurrentFilter("Not closed")
     }
@@ -108,16 +104,17 @@ export default function Issues() {
     if (!(getFormValues().repo === '')) {
         filteredIssues?.forEach(el => {
             body.push(
-                  <Col xs={24} md={8} xl={6} className="mb-4">
-                    <Card title={el.id}
-                        headStyle={{
-                            backgroundColor: theme === "dark"? '#212529' : '#f5f5f5' , 
-                            color: theme === "dark"? '#f8f9fa' : '000000'
-                        }}
-                        bodyStyle={{ 
-                            backgroundColor: theme === "dark"? '#343a40' : '#fafafa',
-                            color: theme === "dark"? '#f8f9fa' : '#000000'
-                        }}>
+                <Col xs={24} md={8} xl={6} className="mb-4">
+                    <Card 
+                    title={el.id} 
+                    headStyle={{
+                        backgroundColor: theme === "dark"? '#212529' : '#f5f5f5' , 
+                        color: theme === "dark"? '#f8f9fa' : '000000'
+                    }}
+                    bodyStyle={{ 
+                        backgroundColor: theme === "dark"? '#343a40' : '#fafafa',
+                        color: theme === "dark"? '#f8f9fa' : '#000000'
+                    }}>
                         <p>Author: {el.author.name ? el.author.name : "Not provided"}</p>
                         <p>Created_at: {el.created_at? formatDateAndTime(el.created_at) : "Not provided"}</p>
                         <p>Labels: 
@@ -128,7 +125,7 @@ export default function Issues() {
                         <p>Closed_at: {(el.closed_at ? formatDateAndTime(el.closed_at) : "Not closed")}</p>
                         <p>Milestone: {el.milestone? el.milestone.title : "Not provided"}</p>
                     </Card>
-                  </Col>
+                </Col>
             )     
         })
     }

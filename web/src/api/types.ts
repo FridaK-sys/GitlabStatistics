@@ -1,16 +1,5 @@
 export type requestMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
-export type APIResponse<ResponseType> = {
-    status: number;
-    ok: boolean;
-    data: ResponseType & ErrorResponse;
-    headers: Headers;
-};
-
-export type ErrorResponse = {
-    errorMsg?: string;
-};
-
 export type Commit = {
     id: string;
     short_id: string;
