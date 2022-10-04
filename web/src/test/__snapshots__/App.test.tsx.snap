@@ -4,8 +4,37 @@ exports[`Jest Snapshot testing suite Matches DOM Snapshot 1`] = `
 <div
   className="container"
 >
-  <p>
-    Please enter a repo!
+  <h3>
+    Settings
+  </h3>
+  <p
+    className="pb-2"
+  >
+    In order to customize the website you are able to toggle between light and dark mode
   </p>
+  <div
+    className="mt-3 p-4 border border-secondary"
+  >
+    <h6
+      className="pb-2"
+    >
+      Toggle theme
+    </h6>
+    <button
+      aria-checked={false}
+      className="ant-switch pb-2"
+      onClick={[Function]}
+      onKeyDown={[Function]}
+      role="switch"
+      type="button"
+    >
+      <div
+        className="ant-switch-handle"
+      />
+      <span
+        className="ant-switch-inner"
+      />
+    </button>
+  </div>
 </div>
 `;

@@ -1,11 +1,12 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
+
+import React from 'react';
+import Settings from '../components/Settings';
 import renderer from "react-test-renderer";
-import Homepage from '../components/Homepage';
 
 describe("Jest Snapshot testing suite", () => {
   it("Matches DOM Snapshot", () => {
-    const domTree = renderer.create(<Homepage />).toJSON();
+    const domTree = renderer.create(<Settings />).toJSON();
     expect(domTree).toMatchSnapshot();
   });
 });
