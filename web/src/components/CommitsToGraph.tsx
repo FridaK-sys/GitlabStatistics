@@ -6,8 +6,17 @@ import { getAllCommitsFromApi, getAllBranches, getAllCommitsFromBranch } from ".
 import { Branch, Commit, commitsByDate } from "../api/types";
 import Chart from "./Graph";
 import { ThemeContext } from "../context/ThemeContext";
+import { getFormValues } from "./utils";
 
-function getDates(startDateStr: string, stopDateStr: string) { //hei
+/** 
+* Function that returns dates between to given dates
+*
+* @param startDateStr 
+* @param stopDateStr
+* @returns The dates between the start and stop date
+*/
+function getDates(startDateStr: string, stopDateStr: string) {
+
     let currentDate = new Date(startDateStr);
     const stopDate = new Date(stopDateStr);
     let allDates: commitsByDate[] = [];
@@ -23,19 +32,9 @@ function getDates(startDateStr: string, stopDateStr: string) { //hei
     return allDates;
 }
 
-function getFormValues() {
-    const storedValues = localStorage.getItem('form');
-    if (!storedValues)
-        return {
-          repo: '',
-          token: '',
-        };
-    return JSON.parse(storedValues);
-}
-
 export default function CommitsToGraph() {
 
-    const [chartsData, setChartsData] = useState<commitsByDate[]>([]);
+    const [chartData, setChartData] = useState<commitsByDate[]>([]);
     const [branches, setBranches] = useState<Branch[]>([])
     const [currentBranch, setCurrentBranch] = useState<String>("")
     const { theme } = useContext(ThemeContext);
@@ -60,17 +59,22 @@ export default function CommitsToGraph() {
             ))}
        </Menu>
     );
-    
-    function updateCommitData(commitsList: Commit[]) {
-        const firstCommitDate = commitsList.slice(-1)[0].committed_date.slice(0, 10);
-        const lastCommitDate = commitsList[0].committed_date.slice(0, 10);
+
+    /** 
+    * Updates the data in ChartData
+    *
+    * @param commitList
+    */
+    function updateCommitData(commitList: Commit[]) {
+        const firstCommitDate = commitList.slice(-1)[0].committed_date.slice(0, 10);
+        const lastCommitDate = commitList[0].committed_date.slice(0, 10);
 
         let newChartsDataState: commitsByDate[] = getDates(
             firstCommitDate,
             lastCommitDate
         );
 
-        for (let apiCommit of commitsList) {
+        for (let apiCommit of commitList) {
             const date = apiCommit.committed_date.slice(0, 10);
             console.log(date)
             newChartsDataState = newChartsDataState.map((chartDataObject) => {
@@ -83,7 +87,7 @@ export default function CommitsToGraph() {
             return chartDataObject;
         });
         }
-        setChartsData(newChartsDataState);
+        setChartData(newChartsDataState);
     }
 
     useEffect(() => {
@@ -95,7 +99,6 @@ export default function CommitsToGraph() {
             const commits = await getAllCommitsFromApi();
             updateCommitData(commits);
             setCurrentBranch("main")
-            
           } catch (e) {
             console.log(e);
           }
@@ -114,7 +117,7 @@ export default function CommitsToGraph() {
     }, []);    
 
     const props = {
-        data: chartsData,
+        data: chartData,
     };
 
     return (
@@ -138,7 +141,10 @@ export default function CommitsToGraph() {
                 </>
             }
             {(getFormValues().repo === '') &&
-                <p>Please choose a repo!</p>
+                <div className="text">
+                    <h4>Please enter a repository!</h4>
+                    <p>In order to view information about a repository, you must type the project code and the token (if needed).</p>
+                </div>
             }
         </Container>
     );

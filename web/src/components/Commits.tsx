@@ -1,20 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Container from 'react-bootstrap/Container';
 import { getAllCommitsFromApi } from '../api/apiservice';
 import { Commit } from "../api/types";
-import { formatDateAndTime } from "./utils";
+import { formatDateAndTime, getFormValues } from "./utils";
 import { Card, Col, Row } from 'antd';
 import { ThemeContext } from "../context/ThemeContext";
-
-function getFormValues() {
-    const storedValues = localStorage.getItem('form');
-    if (!storedValues)
-        return {
-          repo: '',
-          token: '',
-        };
-    return JSON.parse(storedValues);
-}
+import './Homepage.css';
 
 export default function Commits() {
     
@@ -35,7 +26,7 @@ export default function Commits() {
     if (!(getFormValues().repo === '')) {
         commits?.forEach(el => {
             body.push(
-                <Col xs={24} xl={8} className="mb-4"> 
+                <Col xs={24} md={12} xl={8} className="mb-4"> 
                     <Card title={el.id}
                     headStyle={{
                         backgroundColor: theme === "dark"? '#212529' : '#f5f5f5', 
@@ -60,7 +51,7 @@ export default function Commits() {
         <Container>
             {!(getFormValues().repo === '') &&
                 <>
-                    <h3 className="pt-4 pb-4 text-center">Alle commits i main</h3>
+                    <h3 className="pt-4 pb-4 text-center">All commits to the branch "main"</h3>
                     <div className="site-card-wrapper">
                         <Row gutter={16}>
                             {body}
@@ -69,7 +60,10 @@ export default function Commits() {
                 </>
             }
             {(getFormValues().repo === '') &&   
-                <p>Please enter a repo!</p>
+                <div className="text">
+                    <h4>Please enter a repository!</h4>
+                    <p>In order to view information about a repository, you must type the project code and the token (if needed).</p>
+                </div>
             }   
         </Container>
     );

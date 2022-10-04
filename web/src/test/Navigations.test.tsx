@@ -26,6 +26,3 @@ test("Check if value field is cleard", async () => {
         
      })
 })
-
-
-
