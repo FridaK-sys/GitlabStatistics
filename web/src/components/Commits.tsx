@@ -1,21 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Container from 'react-bootstrap/Container';
 import { getAllCommitsFromApi } from '../api/apiservice';
 import { Commit } from "../api/types";
-import { formatDateAndTime } from "./utils";
+import { formatDateAndTime, getFormValues } from "./utils";
 import { Card, Col, Row } from 'antd';
 import { ThemeContext } from "../context/ThemeContext";
 import './Homepage.css';
-
-function getFormValues() {
-    const storedValues = localStorage.getItem('form');
-    if (!storedValues)
-        return {
-          repo: '',
-          token: '',
-        };
-    return JSON.parse(storedValues);
-}
 
 export default function Commits() {
     
@@ -70,7 +60,10 @@ export default function Commits() {
                 </>
             }
             {(getFormValues().repo === '') &&   
-                <h4 className="text">Please enter a repo!</h4>
+                <div className="text">
+                    <h4>Please enter a repository!</h4>
+                    <p>In order to view information about a repository, you must type the project code and the token (if needed).</p>
+                </div>
             }   
         </Container>
     );

@@ -1,3 +1,5 @@
+export type requestMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+
 export type APIResponse<ResponseType> = {
     status: number;
     ok: boolean;
@@ -8,8 +10,6 @@ export type APIResponse<ResponseType> = {
 export type ErrorResponse = {
     errorMsg?: string;
 };
-
-export type APIRequestMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
 export type Commit = {
     id: string;

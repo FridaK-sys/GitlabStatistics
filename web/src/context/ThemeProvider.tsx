@@ -10,6 +10,9 @@ export const ThemeProvider: React.FC<Props> = ({ children }) => {
         (localStorage.getItem("theme") as "light" | "dark") || "dark"
     );
 
+    /** 
+    * Function that toggles between dark and light theme and sets the value in localstorage
+    */
     const toggleTheme = (): void => {
         const val = theme === "light" ? "dark" : "light";
         setTheme(val);

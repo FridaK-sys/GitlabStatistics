@@ -5,21 +5,10 @@ import { Card, Col, Row } from 'antd';
 import Container from 'react-bootstrap/Container';
 import { Issue } from "../api/types";
 import type { MenuProps } from 'antd';
-import { formatDateAndTime } from "./utils";
+import { formatDateAndTime, getFormValues } from "./utils";
 import { getIssuesFromAPI } from '../api/apiservice';
 import { ThemeContext } from "../context/ThemeContext";
 import './Homepage.css';
-
-function getFormValues() {
-    const storedValues = localStorage.getItem('form');
-    if (!storedValues)
-        return {
-          repo: '',
-          token: '',
-        };
-    return JSON.parse(storedValues);
-}
-
 
 export default function Issues() {
 
@@ -86,26 +75,26 @@ export default function Issues() {
     }
 
     const menu = (
-    <Menu
-        onClick={handleStatusClick}
-        items={[
-        {
-            label: 'Closed',
-            key: '1',
-            icon: <UserOutlined />,
-        },
-        {
-            label: 'Not closed',
-            key: '2',
-            icon: <UserOutlined />,
-        },
-        {
-            label: 'All',
-            key: '3',
-            icon: <UserOutlined />,
-            }
-        ]}
-    />
+        <Menu
+            onClick={handleStatusClick}
+            items={[
+            {
+                label: 'Closed',
+                key: '1',
+                icon: <UserOutlined />,
+            },
+            {
+                label: 'Not closed',
+                key: '2',
+                icon: <UserOutlined />,
+            },
+            {
+                label: 'All',
+                key: '3',
+                icon: <UserOutlined />,
+                }
+            ]}
+        />
     );
     
     let body: any = []
@@ -141,28 +130,31 @@ export default function Issues() {
     return (
         <Container>
              {!(getFormValues().repo === '') &&
-             <>
-                <Dropdown className="mb-4" overlay={menu}>
-                    <Button
-                    style={{
-                        backgroundColor: theme === "dark"? '#212529' : '#f5f5f5' , 
-                        color: theme === "dark"? '#f8f9fa' : '000000'
-                    }}>
-                        <Space>
-                            {currentFilter}
-                        <DownOutlined />
-                        </Space>
-                    </Button>
-                </Dropdown>
-                <div className="site-card-wrapper">
-                    <Row gutter={16}>
-                        {body}
-                    </Row>
-                </div>
-             </>
+                <>
+                    <Dropdown className="mb-4" overlay={menu}>
+                        <Button
+                        style={{
+                            backgroundColor: theme === "dark"? '#212529' : '#f5f5f5' , 
+                            color: theme === "dark"? '#f8f9fa' : '000000'
+                        }}>
+                            <Space>
+                                {currentFilter}
+                            <DownOutlined />
+                            </Space>
+                        </Button>
+                    </Dropdown>
+                    <div className="site-card-wrapper">
+                        <Row gutter={16}>
+                            {body}
+                        </Row>
+                    </div>
+                </>
             }
             {(getFormValues().repo === '') &&   
-                <h4 className='text'>Please enter a repo!</h4>
+                <div className="text">
+                    <h4>Please enter a repository!</h4>
+                    <p>In order to view information about a repository, you must type the project code and the token (if needed).</p>
+                </div>
             }             
         </Container>
     );
