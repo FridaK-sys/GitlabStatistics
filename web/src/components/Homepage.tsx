@@ -43,6 +43,7 @@ export default function Homepage() {
         if (getFormValues().repo === '') {
             return
         }
+        //Get method for retriving issues from the API. 
         getIssuesFromAPI().then((res) => {
             if (res === null) {
                 return
