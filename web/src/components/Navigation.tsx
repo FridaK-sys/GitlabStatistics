@@ -63,8 +63,8 @@ export default function Navigation() {
     return (
         <Navbar className="p-4 pl-4" bg={theme} variant={theme} expand="lg">
             <Container fluid>
-                <Navbar.Brand href="/">
-                    <Link to="/" className={theme === "dark"? "text-light" : "text-dark"}>Gitlab Statistics</Link>
+                <Navbar.Brand>
+                    <Nav.Link as={Link} to="/" className={theme === "dark"? "text-light" : "text-dark"}>Gitlab Statistics</Nav.Link>
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="navbarScroll" />
                 <Navbar.Collapse id="navbarScroll">
@@ -73,18 +73,10 @@ export default function Navigation() {
                 style={{ maxHeight: '100px' }}
                 navbarScroll
                 >
-                    <Nav.Link>
-                        <Link to="/issues" className={theme === "dark"? "text-light" : "text-dark"}>Issues</Link>
-                    </Nav.Link>
-                    <Nav.Link>
-                        <Link to="/Commits" className={theme === "dark"? "text-light" : "text-dark"}>Commits</Link>
-                    </Nav.Link>
-                    <Nav.Link>
-                        <Link to="/chart" className={theme === "dark"? "text-light" : "text-dark"}>Chart</Link>
-                    </Nav.Link>
-                    <Nav.Link>
-                        <Link to="/settings" className={theme === "dark"? "text-light" : "text-dark"}>Settings</Link>
-                    </Nav.Link>
+                    <Nav.Link as={Link} to="/issues" className={theme === "dark"? "text-light" : "text-dark"}>Issues</Nav.Link>
+                    <Nav.Link as={Link} to="/Commits" className={theme === "dark"? "text-light" : "text-dark"}>Commits</Nav.Link>
+                    <Nav.Link as={Link} to="/chart" className={theme === "dark"? "text-light" : "text-dark"}>Chart</Nav.Link>
+                    <Nav.Link as={Link} to="/settings" className={theme === "dark"? "text-light" : "text-dark"}>Settings</Nav.Link>
                 </Nav>
                     <Form onSubmit={handleSubmit} className="d-sm-flex">
                         <Form.Control
